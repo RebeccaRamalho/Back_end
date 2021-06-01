@@ -4,6 +4,24 @@ const { request } = require("express");
 require('dotenv').config();
 const jwt = require ('jsonwebtoken');
 
+/////// authentifi
+
+
+exports.authentification = async (req, res) =>{
+    const { email } = req.body;
+try{
+    const adminResponse = await model.getAdmin(email);
+        const admin = {
+        email,
+        user_name: userResponse[0][0].user_name,
+        admin_id: userResponse[0][0].admin_id,
+        };
+const token = await jwt.sign(admin, process.env.SECRET);
+res.status(200).json({token: token});
+} catch (err){
+res.status(500).json({message: "mauvaise identification"})
+}
+}
 
 
 
@@ -17,12 +35,11 @@ exports.addArticle = async (req, res) =>{
         model.createArticle(admin.id, req.body, article_id);
         res.status(200).json({message:'article rajouté' });
         return;
-
+        
     }catch(err){
 
         res.status(500).json({err})
-    }
-    
+    }    
 };
 
 // supprimer un article par un admin (control)
