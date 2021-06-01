@@ -1,11 +1,17 @@
+
+require('dotenv').config();
 const express = require("express");
+
 const bodyParser = require("body-parser");
-const routesHandler = require("./routes/handler.js");
+const routesHandler = require("./routes/router.js");
+const bcrypt =require("bcrypt");
+// const { flash }= require("express-flash-message");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/", routesHandler);
+app.use(express.json());
 
 // Backend routing port
 const PORT = 4000;
