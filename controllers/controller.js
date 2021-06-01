@@ -4,7 +4,7 @@ const { request } = require("express");
 require('dotenv').config();
 const jwt = require ('jsonwebtoken');
 
-/////// authentifi
+/////// authentification
 
 
 exports.authentification = async (req, res) =>{
