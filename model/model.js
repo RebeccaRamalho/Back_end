@@ -22,6 +22,9 @@ exports.createAccount = async (admin) =>
 exports.loginAdmin = async (email) =>
   await db.query(`SELECT * FROM admins WHERE email = ${mysql.escape(email)};`);
 
+exports.getAdmin = async (email) =>
+    await db.query(`SELECT * FROM admins WHERE email = ${mysql.escape(email)};`);
+
 ///model async (donc pas de calback) pour la creation d'un article
 exports.createArticle = async (article_id, article, admin_id) =>
   await db.query(
