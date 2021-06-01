@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const { Server } = require("http");
+
+const controller = require("../controllers/controller");
 
 router.get("/articles", (req, res) => {
   const str = [
