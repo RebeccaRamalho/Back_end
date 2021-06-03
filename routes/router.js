@@ -17,13 +17,13 @@ router.get("/articles", (req, res) => {
 
 
  
-router.post("/register", controller.login)
-      .post("/login", controller.login) 
-      .post("/Article", controller.addArticle) 
-      .delete("/Articles/:admin_id/:article_id",controller.delete_a_article)
-      .patch("/changeArticle/:article_id",controller.alter_a_article);
-// .post('')
+router.post("/adminRegister", controller.signUp)
+      .post("/adminlogin", controller.login, controller.authentification);
+      
       // .get("/Article/availableArticle", controller.get_all_article);
       
 
+
+
 module.exports = router;
+
