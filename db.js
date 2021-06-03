@@ -1,4 +1,4 @@
-const  mysql = require("mysql2");
+const  mysql = require("mysql2£");
 require('dotenv').config();
 
 const db = mysql.createConnection({
@@ -7,6 +7,6 @@ const db = mysql.createConnection({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
 });
-db.connect((error) => error ? console.log(error):"connected to the handofhope db");
+db.connect((error) => error ? console.log('error', error): console.log("connected to the handofhope db"));
 
-module.exports = db.promise();
+module.exports = db;

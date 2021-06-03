@@ -6,71 +6,125 @@ const jwt = require ('jsonwebtoken');
 const cookie = require ('cookie-parser');
 
 
-/ ///////// signup///////
+ ///////// signup///////
+// exports.signUp = async (req, res) => {
+
+//     const {user_name, email, password} = req.body;
+
+   
+//     // console.log();
+//     // console.log(password)
+//     // console.log(email);
+
+//     // console.log("email",  email);
+//     // console.log("username", user_name);
+//     // console.log("password", password);
+//     // const regEmail = /^([a-z A-Z 0-9](\.)?)+@\w+\.(\w){2,4}$/;
+//     // const regName = "";
+    
+    
+//       const admin = {
+//             user_name,
+//             email,
+//             password,
+//       };
+      
+//     try {
+      
+//           // const adminResponse = await model.createAccount(admin);
+//           await model.createAccount(admin);
+//           console.log("200 in da place");
+          
+//            res.status(200).json({ message: 'user registered' });
+         
+          
+
+//           console.log(admin);
+
+//         //      }
+//         // );
+        
+//       //   if (regEmail.test(email) && regName.test(user_name)) {
+//       //       console.log('Regex email' )
+//       //       const hash = await bcrypt.hash(password, 10);
+            
+     
+//       //   const admin = {
+//       //     user_name,
+//       //     email,
+//       //     password: hash,
+//       //   };
+//       //   console.log(('email', email, 'password', password));
+//       //   // const userAlreadyexistsArr = await model.getAdmin(email, user_name);
+
+
+//       //   if (userAlreadyexistsArr[0].length === 0) {
+//       //     await model.createAccount(admin);
+//       //     res.status(200).json({ message: 'user registered' });
+//       //     return;
+//       //   }
+//       //   res.status(403).json({ message: 'email already exists' });
+//       // } else {
+//       //   if (!regEmail.test(email)) {
+//       //     res.status(403).json({ err: 'mauvais format Email' });
+//       //     return;
+//       //   }
+//       //   res.status(400).json({ err: 'mauvais format nom' });
+//       // }
+  //   } catch (err) {
+      
+  //    console.log('500in da place');
+  //     res.status(500).json({ error: err });
+  //   }
+  // };
+
+
+
 exports.signUp = async (req, res) => {
-
+    
     const {user_name, email, password} = req.body;
-
-
-    // console.log(('email', email, 'password', password));
-  
+    
     try {
+      const hash = await bcrypt.hash(password,10)
+      const admin = {
+                  user_name,
+                  email,
+                  password: hash,
+                };
+                  
+      const adminResponse = await model.createAccount(admin);
+      console.log(admin)
+    
+      
+      res.status(200).json({ error:"grr"});
+      console.log("catch")
 
-     const regEmail = /^([a-z A-Z 0-9](\.)?)+@\w+\.(\w){2,4}$/;
-     const regName = /^([a-z A-Z])$/;
+        // data: { tour: newTour }
+      });
 
-     if (regEmail.test(email)) {
-
-        console.log('Regex email')
-
-        const hash = await bcrypt.hash(password, 10);
-
-       
-        const admin = {
-          user_name,
-          email,
-          password: hash,
-        }
-
-        //    
-        //  const userAlreadyexistsArr =   model.getAdmin(admin.email);
-
-        // console.log('emaiiiiiil', await admin.email);
-
-        const emailUser = await admin.email;
-
-        // console.log('tessst', emailUser);
-
-             model.getAdmin(emailUser => {
-
-            // const userAlreadyexistsArr =   model.getAdmin(admin.email);
-
-            // console.log('admin email', userAlreadyexistsArr);
-
-            console.log('userExist');
-
-        });
-
+      
+          
       
   
-        // if (userAlreadyexistsArr[0].length === 0) {
-        //   await model.createAccount(admin);
-        //   res.status(200).json({ message: 'admin registered' });
-        //   return;
-        // }
-        //     res.status(403).json({ message: 'email already exists' });
-        // } else  {
-        //   res.status(403).json({ err: 'mauvais format Email'});
-        //   return;
-        }   
-        else {
-            console.log('ELSE')
-        }
-      
+      //   res.status(403).json({ message: 'email already exists' });
+      // } else {
+      //   if (!regEmail.test(email)) {
+      //     res.status(403).json({ err: 'mauvais format Email' });
+      //     return;
+      //   }
+      //   res.status(403).json({ err: 'name non correcte' });
+      // }
     } catch (err) {
-      res.status(500).json({ error: err });
+      res.status(500).json({ error:"grr"});
+      console.log("catch");
+
     }
-};
+  };
+  
+      
+
+        
+// };
   
 
 // exports.signUp = async(req,res)=>{
@@ -152,7 +206,7 @@ exports.signUp = async (req, res) => {
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
-    const resp = await utils.login(email);
+    const resp = await model.login(email);
     
     if (resp[0].length !== 0) {
       
@@ -181,8 +235,8 @@ exports.authentification = async (req, res) =>{
 
         const admin = {
            email,
-           user_name: userResponse[0][0].user_name,
-           admin_id: userResponse[0][0].admin_id,
+           user_name: adminResponse[0][0].user_name,
+           admin_id: adminResponse[0][0].admin_id,
         };
         
         const token = await jwt.sign(admin, process.env.SECRET);

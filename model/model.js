@@ -1,24 +1,33 @@
 const mysql = require("mysql2");
 const db = require("../db");
+const { request,response } = require("express");
 
-function queryResponse(callback, err, status_ok) {
-  if (err) {
-    callback(err, null);
-    return;
-  }
-  callback(null, status_ok);  
-}
+
 /////////////////requete pour la database=db.js//////
 
-///////CREER UN COMPTE ADMIN
-exports.createAccount = async (admin) =>
-  await db.query(
-    `INSERT INTO admins ( user_name, email, password) VALUES (${mysql.escape(admin.email)}, ${mysql.escape(admin.password)}, ${mysql.escape(admin.user_name)});`
-  );
+// ///////CREER UN COMPTE ADMIN
+// exports.createAccount = async (admin) => {
+//   await db.query(
+//     `INSERT INTO admins (user_name, email, password) VALUES (${mysql.escape(admin.email)}, ${mysql.escape(admin.password)}, ${mysql.escape(admin.user_name)});`,
+//     (error, result) => {
+//       if (error) {
+//         console.log("error: ", error);
+//         callback(error, null);
+//         return;
+//       }
+
+//       callback(null, result);
+//     }
+//   );
+// };
+
+
+// signup
+exports.createAccount = async (admin) => await db.query(`INSERT INTO admins(email, password, user_name) VALUES(${mysql.escape(admin.email)}, ${mysql.escape(admin.password)}, ${mysql.escape(admin.user_name)});`)
 
 /////POUR QU'UN ADMIN SE CONNECT 
-exports.loginAdmin = async (mail) =>
-  await db.query(`SELECT * FROM admins WHERE email = ${mysql.escape(mail)};`);
+exports.loginAdmin = async (email) =>
+  await db.query(`SELECT * FROM admins WHERE email = ${mysql.escape(email)};`);
 
 exports.getAdmin = async (email) =>
     await db.query(`SELECT * FROM admins WHERE email = ${mysql.escape(email)};`);
