@@ -19,6 +19,10 @@ router
   .post("/adminRegister", controller.signUp)
   .post("/adminlogin", controller.login, controller.authentification);
 
+router
+  .post("/adminRegister", controller.signUp)
+  .post("/adminlogin", controller.login, controller.authentification);
+
 // .get("/Article/availableArticle", controller.get_all_article);
 
 module.exports = router;
