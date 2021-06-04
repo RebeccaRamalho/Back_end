@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-require('dotenv').config();
+require("dotenv").config();
 
 const controller = require("../controllers/controller");
 
@@ -15,15 +15,9 @@ router.get("/articles", (req, res) => {
   res.end(JSON.stringify(str));
 });
 
+router.post("/adminRegister", controller.signUp);
+// .post("/adminlogin", controller.login, controller.authentification);
 
- 
-router.post("/adminRegister", controller.signUp)
-      .post("/adminlogin", controller.login, controller.authentification);
-      
-      // .get("/Article/availableArticle", controller.get_all_article);
-      
-
-
+// .get("/Article/availableArticle", controller.get_all_article);
 
 module.exports = router;
-
