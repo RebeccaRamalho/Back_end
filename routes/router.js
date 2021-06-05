@@ -1,23 +1,16 @@
 const express = require("express");
+const isAuth = require("../middlewares/isAuth");
 const router = express.Router();
 require("dotenv").config();
-
+const userController = require("../controllers/userController");
 const controller = require("../controllers/controller");
 
-router.get("/articles", (req, res) => {
-  const str = [
-    {
-      tiltle: "test",
-      msg: "Lorenipsum patatitata",
-      author: "maryse Condé",
-    },
-  ];
-  res.end(JSON.stringify(str));
-});
+router
+  .post("/adminRegister", userController.signUp)
+  .post("/adminlogin", userController.login)
+  .post("/logout", userController.logout);
 
-router.post("/adminRegister", controller.signUp);
-// .post("/adminlogin", controller.login, controller.authentification);
-
-// .get("/Article/availableArticle", controller.get_all_article);
+///// route article
+router.post("/articles", isAuth, controller.publishArticles);
 
 module.exports = router;

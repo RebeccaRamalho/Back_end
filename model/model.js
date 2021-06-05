@@ -1,4 +1,4 @@
-const mysql = require("mysql2/promise");
+const mysql = require("mysql2");
 const db = require("../db");
 const { request, response } = require("express");
 
@@ -6,14 +6,10 @@ const { request, response } = require("express");
 
 // ///////CREER UN COMPTE ADMIN
 
-// con.promise().query("SELECT 1")
-//   .then( ([rows,fields]) => {
-//     console.log(rows);
-//   })
-//   .catch(console.log)
-//   .then( () => con.end());
-exports.getAdmin = async (email, callback) => {
-  await db.query(
+//I_Admin i want to connect
+/*1_checking if admin exist the db*/
+exports.getAdmin = (email, callback) => {
+  db.query(
     `SELECT * FROM admins WHERE email = ${mysql.escape(email)};`,
     (err, result) => {
       if (err) {
@@ -25,12 +21,13 @@ exports.getAdmin = async (email, callback) => {
   );
 };
 
-exports.createAccount = async (admin, callback) => {
-  await db.query(
+/*2_*/
+exports.createAccount = (admin, callback) => {
+  db.query(
     `INSERT INTO admins (user_name, email, password) VALUES (${mysql.escape(
       admin.user_name
     )},  ${mysql.escape(admin.email)}, ${mysql.escape(admin.password)});`,
-    async (err, result) => {
+    (err, result) => {
       if (err) {
         callback(err, null);
         return;
@@ -39,6 +36,17 @@ exports.createAccount = async (admin, callback) => {
     }
   );
 };
+exports.createArticle = (article, admin_id, callback) =>
+  db.query(
+    `INSERT INTO article(admin_id, title, img, tags, resume_article, content_article, author_article, video) VALUES ("${admin_id}","${article.title}","${article.img}","${article.tags}","${article.resume_article}","${article.content_article}","${article.author_article}","${article.video}")`,
+    (err, result) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      callback(null, result);
+    }
+  );
 
 // signup
 // exports.createAccount = async (admin) => await db.query(`INSERT INTO admins(email, password, user_name) VALUES(${mysql.escape(admin.email)}, ${mysql.escape(admin.password)}, ${mysql.escape(admin.user_name)});`)
@@ -50,11 +58,7 @@ exports.createAccount = async (admin, callback) => {
 // exports.getAdmin = async (email) =>
 //     await db.query(`SELECT * FROM admins WHERE email = ${mysql.escape(email)};`);
 
-// ///model async (donc pas de calback) pour la creation d'un article
-// exports.createArticle = async (article_id, article, admin_id) =>
-//   await db.query(
-//     `INSERT INTO article(article_id, admins_id, title, img, tags, resume_article, content_article, author_article, video) VALUES ("${article_id}","${admin_id}","${article.title}","${article.img}","${article.tags}","${article.resume_article}","${article.content_article}","${article.author_article}","${article.video}","${article}")`
-//   );
+///model async (donc pas de calback) pour la creation d'un article
 
 // ////model non async (donc avec callback) pour la supression d'un article
 // exports.delete_a_article = (article_id, callback, admin_id) => {
