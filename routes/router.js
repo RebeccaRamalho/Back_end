@@ -1,29 +1,22 @@
 const express = require("express");
+const isAuth = require("../middlewares/isAuth");
 const router = express.Router();
-require('dotenv').config();
-
+require("dotenv").config();
+const userController = require("../controllers/userController");
 const controller = require("../controllers/controller");
 
-router.get("/articles", (req, res) => {
-  const str = [
-    {
-      tiltle: "test",
-      msg: "Lorenipsum patatitata",
-      author: "maryse Condé",
-    },
-  ];
-  res.end(JSON.stringify(str));
-});
+router
+  .post("/adminRegister", userController.signUp)
+  .post("/adminlogin", userController.login)
+  .post("/logout", userController.logout);
 
-
- 
-router.post("/Article", controller.addArticle) 
-      .delete("/Articles/:admin_id/:article_id",controller.delete_a_article)
-      .patch("/changeArticle/:article_id",controller.alter_a_article);
-      // .post("/register", controller.login)
-      // .post("/login", controller.login) 
-// .post('')
-      // .get("/Article/availableArticle", controller.get_all_article);
-      
+///// route article
+router
+  .post("/articles", isAuth, controller.publishArticles)
+  .get("/articles", isAuth, controller.getArticles)
+  .delete("/article/:article_id", isAuth, controller.deleteArticles)
+  .get("/dernierArticles", controller.getLastArticles)
+  .get("/articleDetails/:article_id", controller.articleDetails)
+  .post("/votrePetitMot", controller.postReview);
 
 module.exports = router;
