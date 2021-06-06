@@ -21,7 +21,7 @@ exports.getAdmin = (email, callback) => {
   );
 };
 
-/*2_*/
+/*2_creation of the admin's account*/
 exports.createAccount = (admin, callback) => {
   db.query(
     `INSERT INTO admins (user_name, email, password) VALUES (${mysql.escape(
@@ -36,7 +36,8 @@ exports.createAccount = (admin, callback) => {
     }
   );
 };
-exports.createArticle = (article, admin_id, callback) =>
+/*3_admin i want to create an article*/
+exports.createArticle = (article, admin_id, callback) => {
   db.query(
     `INSERT INTO article(admin_id, title, img, tags, resume_article, content_article, author_article, video) VALUES ("${admin_id}","${article.title}","${article.img}","${article.tags}","${article.resume_article}","${article.content_article}","${article.author_article}","${article.video}")`,
     (err, result) => {
@@ -47,34 +48,72 @@ exports.createArticle = (article, admin_id, callback) =>
       callback(null, result);
     }
   );
+};
 
-// signup
-// exports.createAccount = async (admin) => await db.query(`INSERT INTO admins(email, password, user_name) VALUES(${mysql.escape(admin.email)}, ${mysql.escape(admin.password)}, ${mysql.escape(admin.user_name)});`)
+/*4_Admin i want to see all articles (attention on n'a oublié la possibilité que l'utilisateur puisse avoir accès à tous les articles => à travailler plus tard quand l'asso aura plus de subtance au niveau des articles*/
+exports.getallArticle = (callback) => {
+  db.query(`select * from article;`, (err, result) => {
+    if (err) {
+      callback(err, null);
+      return;
+    }
+    callback(null, result);
+  });
+};
+/*5_user i want to see the last 3 articles article*/
+exports.get3LastArticle = (callback) => {
+  db.query(
+    `select * from article order by article_id desc limit 3;`,
+    (err, result) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      callback(null, result);
+    }
+  );
+};
+/*6_user i want to see the details of an article*/
+exports.getArticleDetails = (article_id, callback) => {
+  db.query(
+    `select * from article  where article_id=${article_id};`,
+    (err, result) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      callback(null, result);
+    }
+  );
+};
+/*7_Admin i want to delete an article*/
+exports.delete_an_article = (article_id, callback) => {
+  db.query(
+    `DELETE FROM article WHERE article_id = ${article_id};`,
+    (err, response) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      callback(null, response);
+    }
+  );
+};
+/*8_user i want to add a review*/
+exports.addAReview = (review, callback) => {
+  db.query(
+    `INSERT INTO reviewer (last_name, first_name, opinion, role) values ("${review.last_name}", "${review.first_name}", "${review.opinion}", "${review.role}");`,
+    (err, response) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      callback(null, response);
+    }
+  );
+};
 
-// /////POUR QU'UN ADMIN SE CONNECT
-// exports.loginAdmin = async (email) =>
-//   await db.query(`SELECT * FROM admins WHERE email = ${mysql.escape(email)};`);
-
-// exports.getAdmin = async (email) =>
-//     await db.query(`SELECT * FROM admins WHERE email = ${mysql.escape(email)};`);
-
-///model async (donc pas de calback) pour la creation d'un article
-
-// ////model non async (donc avec callback) pour la supression d'un article
-// exports.delete_a_article = (article_id, callback, admin_id) => {
-//   db.query(
-//     `DELETE FROM article WHERE article.id = ${article_id} AND admin_id = ${admin_id};`,
-//     (err, response) => {
-//       if (err) {
-//         callback(err, null);
-//         return;
-//       }
-//       callback(null, response);
-//     }
-//   );
-// };
-
-// ////model non async (donc avec callback) pour la supression d'un article
+// ////model non async (donc avec callback) pour la modification d'un article
 // exports.alter_a_article = (article_id, callback, admin_id, article) => {
 //   db.query(
 //     `UPDATE INTO article (title,img,tags, resume_article, content_article, author_article, video, admin_id) VALUES ("${admin_id}","${article.title}","${article.img}","${article.tags}","${article.resume_article}","${article.content_article}","${article.author_article}","${article.video}") WHERE article_id = ${article_id} and admin_id= ${admin_id} ;`,
@@ -87,7 +126,3 @@ exports.createArticle = (article, admin_id, callback) =>
 //     }
 //   );
 // };
-
-////model async pour la récupération de tout les articles
-// exports.get_all_article = async ( callback) =>
-//  await db.query (`SELECT * FROM article`);

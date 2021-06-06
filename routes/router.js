@@ -11,6 +11,12 @@ router
   .post("/logout", userController.logout);
 
 ///// route article
-router.post("/articles", isAuth, controller.publishArticles);
+router
+  .post("/articles", isAuth, controller.publishArticles)
+  .get("/articles", isAuth, controller.getArticles)
+  .delete("/article/:article_id", isAuth, controller.deleteArticles)
+  .get("/dernierArticles", controller.getLastArticles)
+  .get("/articleDetails/:article_id", controller.articleDetails)
+  .post("/votrePetitMot", controller.postReview);
 
 module.exports = router;
