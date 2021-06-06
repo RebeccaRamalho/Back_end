@@ -19,7 +19,8 @@ router
   .get("/articleDetails/:article_id", controller.articleDetails)
   .post("/votrePetitMot", controller.postReview)
   .get("/votrePetitMot", controller.getReview)
-  // .delete("/votrePetitMot", controller.deleteReview)
-  ;
+  .get("/articles/:tags", controller.getArticlesTag);
+  // .delete("/votrePetitMot/:id", isAuth, controller.deleteReview)
+  // ;
 
 module.exports = router;

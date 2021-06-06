@@ -115,7 +115,21 @@ exports.addAReview = (review, callback) => {
 /*9_user i want to get all review*/
 exports.getAllReview = (callback) => {
   db.query(
-    `SELECT * from reviewer order by id asc limit 3;`,
+    `SELECT * from review order by id asc limit 3;`,
+    (err, result) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      callback(null, result);
+    }
+  );
+};
+/*10_admin i want to delete a review*/
+/*11_user i want to get all article tag from a specifiq tag*/
+exports.getArticlesTag = (tags,callback) => {
+  db.query(
+    `SELECT * from article where tags ="${tags}";`,
     (err, result) => {
       if (err) {
         callback(err, null);
@@ -126,6 +140,8 @@ exports.getAllReview = (callback) => {
     }
   );
 };
+
+
 
 // ////model non async (donc avec callback) pour la modification d'un article
 // exports.alter_a_article = (article_id, callback, admin_id, article) => {

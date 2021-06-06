@@ -99,7 +99,6 @@ exports.postReview = (req, res) => {
 };
 /*user i want to get all reviews */
 exports.getReview = (req, res) => {
-  console.log("CONTROLLER DONE");
   model.getAllReview((error, result) => {
     if (error) {
       res.send(error.message);
@@ -107,4 +106,16 @@ exports.getReview = (req, res) => {
     res.status(200).json(result);
   });
 };
-// /*user i want to get all reviews */
+/*admin i want to delete a review */
+// exports.console.log("CONTORRRRR");
+
+/*user i want to get all article tag from a specifiq tag */
+exports.getArticlesTag = (req, res) => {
+  const { tags } = req.params;
+  model.getArticlesTag(tags,(error, result) => {
+    if (error) {
+      res.send(error.message);
+    }
+    res.status(200).json(result);
+  });
+};
