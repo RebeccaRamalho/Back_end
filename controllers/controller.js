@@ -89,7 +89,7 @@ exports.postReview = (req, res) => {
     opinion,
     role,
   };
-
+/*user i want to add a review */
   model.addAReview(review, (error, result) => {
     if (error) {
       res.send(error.message);
@@ -97,3 +97,14 @@ exports.postReview = (req, res) => {
     res.status(200).json(result);
   });
 };
+/*user i want to get all reviews */
+exports.getReview = (req, res) => {
+  console.log("CONTROLLER DONE");
+  model.getAllReview((error, result) => {
+    if (error) {
+      res.send(error.message);
+    }
+    res.status(200).json(result);
+  });
+};
+// /*user i want to get all reviews */

@@ -103,12 +103,26 @@ exports.delete_an_article = (article_id, callback) => {
 exports.addAReview = (review, callback) => {
   db.query(
     `INSERT INTO reviewer (last_name, first_name, opinion, role) values ("${review.last_name}", "${review.first_name}", "${review.opinion}", "${review.role}");`,
-    (err, response) => {
+    (err, result) => {
       if (err) {
         callback(err, null);
         return;
       }
-      callback(null, response);
+      callback(null, result);
+    }
+  );
+};
+/*9_user i want to get all review*/
+exports.getAllReview = (callback) => {
+  db.query(
+    `SELECT * from reviewer order by id asc limit 3;`,
+    (err, result) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      console.log("RESPONSE "+ result);
+      callback(null, result);
     }
   );
 };
