@@ -45,6 +45,35 @@ exports.getArticles = (req, res) => {
     res.status(200).json(result);
   });
 };
+/*Admin i want to update an article */
+exports.updateArticles = (req, res) => {
+  const { article_id, admin_id } = req.params;
+  const { title, 
+          img, 
+          tags, 
+          resume_article, 
+          content_article, 
+          author_article, 
+          video,} = req.body;
+          
+  const article = {
+            title,
+            img,
+            tags,
+            resume_article,
+            content_article,
+            author_article,
+            video,
+           
+  };        
+
+  model.updateArticles(article_id, article,(error, result) => {
+    if (error) {
+      res.send(error.message);
+    }
+    res.status(200).json(result);
+  });
+};
 
 /*user i want to see the last 3 articles*/
 exports.getLastArticles = (req, res) => {
@@ -89,7 +118,6 @@ exports.postReview = (req, res) => {
     opinion,
     role,
   };
-/*user i want to add a review */
   model.addAReview(review, (error, result) => {
     if (error) {
       res.send(error.message);
