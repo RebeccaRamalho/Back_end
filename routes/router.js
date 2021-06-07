@@ -19,9 +19,7 @@ router
   .get("/articleDetails/:article_id", controller.articleDetails)
   .post("/votrePetitMot", controller.postReview)
   .get("/votrePetitMot", controller.getReview)
-  .delete("/votrePetitMot/:id", 
-  // isAuth, 
-  controller.deleteReview)
+  .delete("/votrePetitMot/:id", isAuth, controller.deleteReview)
   .get("/articles/:tags", controller.getArticlesTag);
   
 
