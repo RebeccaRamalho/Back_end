@@ -25,18 +25,14 @@ const isAuth = (request, response, next) => {
         /*b_checking of token validity*/
         const { id, exp } = admin; // where do we retreive the name?
 
-        /*1_if the cookie experation date is inferior to the actual date then the cookie has expired*/
-
-        // if (Date.now() / 1000 >= exp) {
-        //   response.clearCookie("authcookie");
-        //   response.send("youre session has expired, try to reconnect you.");
-        // } else {
+    
         request.admin = { id };
         next();
-        // }
+     
       }
     });
   }
 };
 
 module.exports = isAuth;
+
