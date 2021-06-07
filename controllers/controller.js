@@ -94,7 +94,23 @@ exports.postReview = (req, res) => {
     if (error) {
       res.send(error.message);
     }
-    res.status(200).json(result);
+    // const reviewDet = {
+    //   last_name: result[0].last_name,
+    //   first_name: result[0].first_name,
+    //   opinion: result[0].opinion,
+    //   role: result[0].role,
+    // };
+    console.log("result", result);
+
+    res.status(200).json(
+      result
+      // revieuwDetails: {
+      //   last_name: result[0].last_name,
+      //   first_name: result[0].first_name,
+      //   opinion: result[0].opinion,
+      //   role: result[0].role,
+      // },
+    );
   });
 };
 /*user i want to get all reviews */
