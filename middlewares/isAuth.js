@@ -13,7 +13,7 @@ const isAuth = (request, response, next) => {
     });
   } else {
     //I_if authorization we retreive the token when an user try to access
-    const token = request.cookies.authcookie;
+    const token = request.headers.authorization.split(" ")[1];
 
     //II_We check if the token is valid or not
     jwt.verify(token, SECRET, (error, admin) => {
@@ -27,18 +27,16 @@ const isAuth = (request, response, next) => {
 
         /*1_if the cookie experation date is inferior to the actual date then the cookie has expired*/
 
-        if (Date.now() / 1000 >= exp) {
-          response.clearCookie("authcookie");
-          response.send("youre session has expired, try to reconnect you.");
-        } else {
-          request.admin = { id };
-          next();
-        }
+        // if (Date.now() / 1000 >= exp) {
+        //   response.clearCookie("authcookie");
+        //   response.send("youre session has expired, try to reconnect you.");
+        // } else {
+        request.admin = { id };
+        next();
+        // }
       }
     });
   }
-
-  console.log(token);
 };
 
 module.exports = isAuth;

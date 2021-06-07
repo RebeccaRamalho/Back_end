@@ -93,6 +93,8 @@ exports.login = async (request, response) => {
         } else {
           const hash = result[0].password;
 
+          console.log("reeee", result);
+
           bcrypt.compare(password, hash, (error, correct) => {
             if (error) {
               response.status(500).json({
