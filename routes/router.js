@@ -21,7 +21,7 @@ router
   .get("/votrePetitMot", controller.getReview)
   .delete("/votrePetitMot/:id", isAuth, controller.deleteReview)
   .get("/articles/:tags", controller.getArticlesTag)
-  .put("/articles/:admin_id/:article_id", controller.updateArticles);
+  .put("/articles/:article_id", isAuth, controller.updateArticles);
   
 
 module.exports = router;

@@ -37,9 +37,9 @@ exports.createAccount = (admin, callback) => {
   );
 };
 /*3_admin i want to create an article*/
-exports.createArticle = (article, article_id, callback) => {
+exports.createArticle = (article, admin_id, callback) => {
   db.query(
-    `INSERT INTO article(admin_id, title, img, tags, resume_article, content_article, author_article, video) VALUES ("${mysql.escape(admin_id)}","${mysql.escape(article.title)}","${mysql.escape(article.img)}","${mysql.escape(article.tags)}","${mysql.escape(article.resume_article)}","${mysql.escape(article.content_article)}","${mysql.escape(article.author_article)}","${mysql.escape(article.video)}")`,
+    `INSERT INTO article(admin_id, title, img, tags, resume_article, content_article, author_article, video) VALUES (${mysql.escape(admin_id)},"${mysql.escape(article.title)}","${mysql.escape(article.img)}","${mysql.escape(article.tags)}","${mysql.escape(article.resume_article)}","${mysql.escape(article.content_article)}","${mysql.escape(article.author_article)}","${mysql.escape(article.video)}")`,
     (err, result) => {
       if (err) {
         callback(err, null);
@@ -87,7 +87,7 @@ exports.getArticleDetails = (article_id, callback) => {
   );
 };
 /*7_Admin i want to delete an article*/
-exports.delete_an_article = (article_id, callback) => {
+exports.delete_an_article = (article_id,  callback) => {
   db.query(
     `DELETE FROM article WHERE article_id = ${article_id};`,
     (err, result) => {
@@ -101,10 +101,10 @@ exports.delete_an_article = (article_id, callback) => {
 };
 /*8_Admin i want to update an article*/
 // model non async pour la modification d'un article
-exports.updateArticles = (article_id, article, callback) => {
+exports.updateArticles = (article_id, article, admin_id, callback) => {
   db.query(
     //  mysql.escape(
-    `UPDATE article  SET title="${article.title}", img="${article.img}",tags="${article.tags}", resume_article="${article.resume_article}", content_article="${article.content_article}", author_article="${article.author_article}", video="${article.video}" WHERE article_id = ${article_id} ;`,
+    `UPDATE article  SET title="${article.title}", img="${article.img}",tags="${article.tags}", resume_article="${article.resume_article}", content_article="${article.content_article}", author_article="${article.author_article}", video="${article.video}",admin_id=${admin_id} WHERE article_id = ${article_id};`,
     (err, result) => {
       if (err) {
         callback(err, null);

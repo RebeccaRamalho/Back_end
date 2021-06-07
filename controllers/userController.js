@@ -76,7 +76,7 @@ exports.signUp = async (request, response) => {
 
 exports.login = async (request, response) => {
   const { email, user_name, password } = request.body;
-
+ 
   try {
     await model.getAdmin(
       email /*what i send to the model*/,

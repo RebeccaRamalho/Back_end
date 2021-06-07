@@ -5,6 +5,7 @@ require("dotenv").config();
 /*Admin i want to create an article*/
 exports.publishArticles = (req, res) => {
   const { id } = req.admin;
+  
 
   console.log("admin", id);
 
@@ -26,6 +27,7 @@ exports.publishArticles = (req, res) => {
     content_article,
     author_article,
     video,
+    id,
   };
 
   model.createArticle(article, id, (error, result) => {
@@ -47,14 +49,19 @@ exports.getArticles = (req, res) => {
 };
 /*Admin i want to update an article */
 exports.updateArticles = (req, res) => {
-  const { article_id, admin_id } = req.params;
+  const { id } = req.admin;
+  // const {article_id} = req.params;
+
+  const { article_id, } = req.params;
   const { title, 
           img, 
           tags, 
           resume_article, 
           content_article, 
           author_article, 
-          video,} = req.body;
+          video,
+          
+      } = req.body;
           
   const article = {
             title,
@@ -64,10 +71,11 @@ exports.updateArticles = (req, res) => {
             content_article,
             author_article,
             video,
+            id,
            
   };        
 
-  model.updateArticles(article_id, article,(error, result) => {
+  model.updateArticles(article_id, article, id, (error, result) => {
     if (error) {
       res.send(error.message);
     }
@@ -88,7 +96,8 @@ exports.getLastArticles = (req, res) => {
 /*user i want to see the details of an article*/
 exports.articleDetails = (req, res) => {
   const { article_id } = req.params;
-
+  
+  
   model.getArticleDetails(article_id, (error, result) => {
     if (error) {
       res.send(error.message);
@@ -99,7 +108,7 @@ exports.articleDetails = (req, res) => {
 
 /*Admin i want to delete an article */
 exports.deleteArticles = (req, res) => {
-  const { article_id } = req.params;
+  
   model.delete_an_article(article_id, (error, result) => {
     if (error) {
       res.send(error.message);
@@ -136,7 +145,8 @@ exports.getReview = (req, res) => {
 };
 /*Admin i want to delete a review */
 exports.deleteReview = (req, res) => {
-  const { id } = req.params;
+  const { id } = req.admin;
+  
   model.delete_an_review(id,(error, result) => {
     if (error) {
       res.send(error.message);
