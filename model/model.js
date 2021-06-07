@@ -152,7 +152,8 @@ exports.getArticlesTag = (tags, callback) => {
   );
 };
 
-// ////model non async (donc avec callback) pour la modification d'un article
+/*7_Admin i want to update an article*/
+// model non async pour la modification d'un article
 // exports.alter_a_article = (article_id, callback, admin_id, article) => {
 //   db.query(
 //     `UPDATE INTO article (title,img,tags, resume_article, content_article, author_article, video, admin_id) VALUES ("${admin_id}","${article.title}","${article.img}","${article.tags}","${article.resume_article}","${article.content_article}","${article.author_article}","${article.video}") WHERE article_id = ${article_id} and admin_id= ${admin_id} ;`,
