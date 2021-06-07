@@ -115,7 +115,7 @@ exports.addAReview = (review, callback) => {
 /*9_user i want to get all review*/
 exports.getAllReview = (callback) => {
   db.query(
-    `SELECT * from review order by id asc limit 3;`,
+    `SELECT * FROM reviewer order by id asc limit 3;`,
     (err, result) => {
       if (err) {
         callback(err, null);
@@ -125,11 +125,23 @@ exports.getAllReview = (callback) => {
     }
   );
 };
-/*10_admin i want to delete a review*/
+/*10_Admin i want to delete a review*/
+exports.delete_an_review = (id, callback) => {
+    db.query(`DELETE FROM reviewer WHERE id =${id};`, 
+      (err, result) => {
+        if (err) {
+          callback(err, null);
+          return;
+        }
+        console.log("RESPONSE "+ result);
+        callback(null, result);
+      }
+    );
+  };
+
 /*11_user i want to get all article tag from a specifiq tag*/
-exports.getArticlesTag = (tags,callback) => {
-  db.query(
-    `SELECT * from article where tags ="${tags}";`,
+exports.getArticlesTag = (tags, callback) => {
+  db.query(`SELECT * from article where tags ="${tags}";`,
     (err, result) => {
       if (err) {
         callback(err, null);

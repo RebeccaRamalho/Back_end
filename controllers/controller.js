@@ -36,7 +36,7 @@ exports.publishArticles = (req, res) => {
   });
 };
 
-/*admin i want to see all the articles */
+/*Admin i want to see all the articles */
 exports.getArticles = (req, res) => {
   model.getAllArticle((error, result) => {
     if (error) {
@@ -68,7 +68,7 @@ exports.articleDetails = (req, res) => {
   });
 };
 
-/*admin i want to delete an article */
+/*Admin i want to delete an article */
 exports.deleteArticles = (req, res) => {
   const { article_id } = req.params;
   model.delete_an_article(article_id, (error, result) => {
@@ -106,9 +106,16 @@ exports.getReview = (req, res) => {
     res.status(200).json(result);
   });
 };
-/*admin i want to delete a review */
-// exports.console.log("CONTORRRRR");
-
+/*Admin i want to delete a review */
+exports.deleteReview = (req, res) => {
+  const { id } = req.params;
+  model.delete_an_review(id,(error, result) => {
+    if (error) {
+      res.send(error.message);
+    }
+    res.status(200).json(result);
+  });
+};
 /*user i want to get all article tag from a specifiq tag */
 exports.getArticlesTag = (req, res) => {
   const { tags } = req.params;
