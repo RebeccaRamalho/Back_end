@@ -39,7 +39,7 @@ exports.createAccount = (admin, callback) => {
 /*3_admin i want to create an article*/
 exports.createArticle = (article, admin_id, callback) => {
   db.query(
-    `INSERT INTO article(admin_id, title, img, tags, resume_article, content_article, author_article, video) VALUES ("${mysql.escape(admin_id)}","${mysql.escape(article.title)}","${mysql.escape(article.img)}","${mysql.escape(article.tags)}","${mysql.escape(article.resume_article)}","${mysql.escape(article.content_article)}","${mysql.escape(article.author_article)}","${mysql.escape(article.video)}")`,
+    `INSERT INTO article(admin_id, title, img, tags, resume_article, content_article, author_article, video) VALUES (${mysql.escape(admin_id)},"${mysql.escape(article.title)}","${mysql.escape(article.img)}","${mysql.escape(article.tags)}","${mysql.escape(article.resume_article)}","${mysql.escape(article.content_article)}","${mysql.escape(article.author_article)}","${mysql.escape(article.video)}")`,
     (err, result) => {
       if (err) {
         callback(err, null);
@@ -87,9 +87,24 @@ exports.getArticleDetails = (article_id, callback) => {
   );
 };
 /*7_Admin i want to delete an article*/
-exports.delete_an_article = (article_id, callback) => {
+exports.delete_an_article = (article_id,  callback) => {
   db.query(
     `DELETE FROM article WHERE article_id = ${article_id};`,
+    (err, result) => 
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      callback(null, result);
+    }
+  );
+};
+/*8_Admin i want to update an article*/
+// model non async pour la modification d'un article
+exports.updateArticles = (article_id, article, admin_id, callback) => {
+  db.query(
+    //  mysql.escape(
+    `UPDATE article  SET title="${article.title}", img="${article.img}",tags="${article.tags}", resume_article="${article.resume_article}", content_article="${article.content_article}", author_article="${article.author_article}", video="${article.video}",admin_id=${admin_id} WHERE article_id = ${article_id};`,
     (err, result) => {
       if (err) {
         callback(err, null);
@@ -99,7 +114,7 @@ exports.delete_an_article = (article_id, callback) => {
     }
   );
 };
-/*8_user i want to add a review*/
+/*9_user i want to add a review*/
 exports.addAReview = (review, callback) => {
   db.query(
     `INSERT INTO reviewer (last_name, first_name, opinion, role) values ("${mysql.escape(review.last_name)}", "${mysql.escape(review.first_name)}", "${mysql.escape(review.opinion)}", "${mysql.escape(review.role)}");`,
@@ -114,7 +129,7 @@ exports.addAReview = (review, callback) => {
     }
   );
 };
-/*9_user i want to get all review*/
+/*10_user i want to get all review*/
 exports.getAllReview = (callback) => {
   db.query(
     `SELECT * FROM reviewer order by id asc limit 3;`,
@@ -127,7 +142,7 @@ exports.getAllReview = (callback) => {
     }
   );
 };
-/*10_Admin i want to delete a review*/
+/*11_Admin i want to delete a review*/
 exports.delete_an_review = (id, callback) => {
     db.query(`DELETE FROM reviewer WHERE id =${id};`, 
       (err, result) => {
@@ -140,7 +155,7 @@ exports.delete_an_review = (id, callback) => {
     );
   };
 
-/*11_user i want to get all article tag from a specifiq tag*/
+/*12_user i want to get all article tag from a specifiq tag*/
 exports.getArticlesTag = (tags, callback) => {
   db.query(`SELECT * from article where tags ="${tags}";`,
     (err, result) => {
@@ -148,24 +163,11 @@ exports.getArticlesTag = (tags, callback) => {
         callback(err, null);
         return;
       }
-      console.log("RESPONSE "+ result);
       callback(null, result);
 
     }
   );
 };
 
-/*7_Admin i want to update an article*/
-// model non async pour la modification d'un article
-// exports.alter_a_article = (article_id, callback, admin_id, article) => {
-//   db.query(
-//     `UPDATE INTO article (title,img,tags, resume_article, content_article, author_article, video, admin_id) VALUES ("${admin_id}","${article.title}","${article.img}","${article.tags}","${article.resume_article}","${article.content_article}","${article.author_article}","${article.video}") WHERE article_id = ${article_id} and admin_id= ${admin_id} ;`,
-//     (err, response) => {
-//       if (err) {
-//         callback(err, null);
-//         return;
-//       }
-//       callback(null, response);
-//     }
-//   );
-// };
+
+
