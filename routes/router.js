@@ -10,7 +10,7 @@ router
   .post("/adminlogin", userController.login)
   .post("/logout", userController.logout);
 
-///// route article
+///// route articles
 router
   .post("/articles", isAuth, controller.publishArticles)
   .get("/articles", isAuth, controller.getArticles)
@@ -20,6 +20,7 @@ router
   .post("/votrePetitMot", controller.postReview)
   .get("/votrePetitMot", controller.getReview)
   .delete("/votrePetitMot/:id", isAuth, controller.deleteReview)
-  .get("/articles/:tags", controller.getArticlesTag);
+  .get("/articles/:tags", controller.getArticlesTag)
+  .put("/articles/:article_id", isAuth, controller.updateArticles);
 
 module.exports = router;
