@@ -110,7 +110,6 @@ exports.updateArticles = (article_id, article, admin_id, callback) => {
         callback(err, null);
         return;
       }
-      console.log("RESULT ", result);
       callback(null, result);
     }
   );
@@ -162,7 +161,6 @@ exports.getArticlesTag = (tags, callback) => {
         callback(err, null);
         return;
       }
-      console.log("RESPONSE "+ result);
       callback(null, result);
     }
   );
