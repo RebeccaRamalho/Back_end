@@ -10,7 +10,7 @@ router
   .post("/adminlogin", userController.login)
   .post("/logout", userController.logout);
 
-///// route article
+///// route articles
 router
   .post("/articles", isAuth, controller.publishArticles)
   .get("/articles", isAuth, controller.getArticles)
