@@ -90,7 +90,7 @@ exports.getArticleDetails = (article_id, callback) => {
 exports.delete_an_article = (article_id,  callback) => {
   db.query(
     `DELETE FROM article WHERE article_id = ${article_id};`,
-    (err, result) => {
+    (err, result) => 
       if (err) {
         callback(err, null);
         return;
@@ -118,12 +118,14 @@ exports.updateArticles = (article_id, article, admin_id, callback) => {
 exports.addAReview = (review, callback) => {
   db.query(
     `INSERT INTO reviewer (last_name, first_name, opinion, role) values ("${mysql.escape(review.last_name)}", "${mysql.escape(review.first_name)}", "${mysql.escape(review.opinion)}", "${mysql.escape(review.role)}");`,
+
     (err, result) => {
       if (err) {
         callback(err, null);
         return;
       }
       callback(null, result);
+
     }
   );
 };
@@ -162,6 +164,7 @@ exports.getArticlesTag = (tags, callback) => {
         return;
       }
       callback(null, result);
+
     }
   );
 };
