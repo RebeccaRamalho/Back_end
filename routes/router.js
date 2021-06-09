@@ -22,6 +22,5 @@ router
   .delete("/votrePetitMot/:id", isAuth, controller.deleteReview)
   .get("/articles/:tags", controller.getArticlesTag)
   .put("/articles/:article_id", isAuth, controller.updateArticles);
-  
 
 module.exports = router;
