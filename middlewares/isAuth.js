@@ -25,19 +25,11 @@ const isAuth = (request, response, next) => {
         /*b_checking of token validity*/
         const { id, exp } = admin; // where do we retreive the name?
 
-<<<<<<< HEAD
         request.admin = { id };
         next();
-=======
-    
-        request.admin = { id };
-        next();
-     
->>>>>>> 7c3866385540a4fddd067101296f3ba903576cd8
       }
     });
   }
 };
 
 module.exports = isAuth;
-
