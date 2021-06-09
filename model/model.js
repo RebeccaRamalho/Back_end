@@ -40,13 +40,15 @@ exports.createAccount = (admin, callback) => {
 /*3_admin i want to create an article*/
 exports.createArticle = (article, admin_id, callback) => {
   db.query(
-    `INSERT INTO article(admin_id, title, img, tags, resume_article, content_article, author_article, video) VALUES ('${mysql.escape(
+    `INSERT INTO article(admin_id, title, img, tags, resume_article, content_article, author_article, video) VALUES (${mysql.escape(
       admin_id
-    )}','${mysql.escape(article.title)}', '${mysql.escape(article.img)}','${mysql.escape(article.tags)}', '${mysql.escape(
+    )},${mysql.escape(article.title)}, ${mysql.escape(
+      article.img
+    )},${mysql.escape(article.tags)}, ${mysql.escape(
       article.resume_article
-    )}' ,'${mysql.escape(article.content_article)}','${mysql.escape(
+    )} ,${mysql.escape(article.content_article)},${mysql.escape(
       article.author_article
-    )}','${mysql.escape(article.video)}');`,
+    )},${mysql.escape(article.video)});`,
     (err, result) => {
       if (err) {
         callback(err, null);
@@ -146,9 +148,9 @@ exports.getAllReview = (callback) => {
       callback(err, null);
       return;
     }
-    callback(null, result); 
+    callback(null, result);
   });
-}; 
+};
 /*11_Admin i want to delete a review*/
 exports.delete_an_review = (id, callback) => {
   db.query(`DELETE FROM reviewer WHERE id =${id};`, (err, result) => {
