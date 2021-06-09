@@ -1,6 +1,7 @@
-const mysql = require("mysql2");
 const db = require("../db");
-const { request, response } = require("express");
+const mysql = require("mysql2");
+
+// const { request, response } = require("express");
 
 /////////////////requete pour la database=db.js//////
 
@@ -107,14 +108,15 @@ exports.delete_an_article = (article_id, callback) => {
     }
   );
 };
-/*8_user i want to add a review*/
-exports.addAReview = (review, callback) => {
+/*8_Admin i want to update an article*/
+// model non async pour la modification d'un article
+exports.updateArticles = (article_id, article, admin_id, callback) => {
   db.query(
-    `INSERT INTO reviewer (last_name, first_name, opinion, role) values ("${mysql.escape(
+    `INSERT INTO reviewer (last_name, first_name, opinion, role) values (${mysql.escape(
       review.last_name
-    )}", "${mysql.escape(review.first_name)}", "${mysql.escape(
+    )}, ${mysql.escape(review.first_name)}, ${mysql.escape(
       review.opinion
-    )}", "${mysql.escape(review.role)}");`,
+    )}, ${mysql.escape(review.role)});`,
 
     (err, result) => {
       if (err) {
@@ -125,17 +127,38 @@ exports.addAReview = (review, callback) => {
     }
   );
 };
-/*9_user i want to get all review*/
-exports.getAllReview = (callback) => {
-  db.query(`SELECT * FROM reviewer order by id asc limit 3;`, (err, result) => {
-    if (err) {
-      callback(err, null);
-      return;
+/*9_user i want to add a review*/
+exports.addAReview = (review, callback) => {
+  db.query(
+    `INSERT INTO reviewer (last_name, first_name, opinion, role) values ('${mysql.escape(
+      review.last_name
+    )}', '${mysql.escape(review.first_name)}', '${mysql.escape(
+      review.opinion
+    )}', '${mysql.escape(review.role)}');`,
+
+    (err, result) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      callback(null, result);
     }
-    callback(null, result);
-  });
+  );
 };
-/*10_Admin i want to delete a review*/
+/*10_user i want to get all review*/
+exports.getAllReview = (callback) => {
+  db.query(
+    `SELECT * FROM reviewer order by id desc limit 3;`,
+    (err, result) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      callback(null, result);
+    }
+  );
+};
+/*11_Admin i want to delete a review*/
 exports.delete_an_review = (id, callback) => {
   db.query(`DELETE FROM reviewer WHERE id =${id};`, (err, result) => {
     if (err) {
@@ -146,29 +169,13 @@ exports.delete_an_review = (id, callback) => {
   });
 };
 
-/*11_user i want to get all article tag from a specifiq tag*/
+/*12_user i want to get all article tag from a specifiq tag*/
 exports.getArticlesTag = (tags, callback) => {
-  db.query(`SELECT * from article where tags ="${tags}";`, (err, result) => {
+  db.query(`SELECT * from article where tags =${tags};`, (err, result) => {
     if (err) {
       callback(err, null);
       return;
     }
-    console.log("RESPONSE " + result);
     callback(null, result);
   });
 };
-
-/*7_Admin i want to update an article*/
-// model non async pour la modification d'un article
-// exports.alter_a_article = (article_id, callback, admin_id, article) => {
-//   db.query(
-//     `UPDATE INTO article (title,img,tags, resume_article, content_article, author_article, video, admin_id) VALUES ("${admin_id}","${article.title}","${article.img}","${article.tags}","${article.resume_article}","${article.content_article}","${article.author_article}","${article.video}") WHERE article_id = ${article_id} and admin_id= ${admin_id} ;`,
-//     (err, response) => {
-//       if (err) {
-//         callback(err, null);
-//         return;
-//       }
-//       callback(null, response);
-//     }
-//   );
-// };
