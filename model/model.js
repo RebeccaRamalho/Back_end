@@ -130,7 +130,7 @@ exports.addAReview = (review, callback) => {
 /*10_user i want to get all review*/
 exports.getAllReview = (callback) => {
   db.query(
-    `SELECT * FROM reviewer order by id asc limit 3;`,
+    `SELECT * FROM reviewer order by id desc limit 3;`,
     (err, result) => {
       if (err) {
         callback(err, null);
