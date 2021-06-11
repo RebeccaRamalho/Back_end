@@ -43,7 +43,7 @@ exports.publishArticles = (req, res) => {
 
 /*Admin i want to see all the articles */
 exports.getArticles = (req, res) => {
-  model.getAllArticle((error, result) => {
+  model.getallArticle((error, result) => {
     if (error) {
       res.send(error.message);
     }
