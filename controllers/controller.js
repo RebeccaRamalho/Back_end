@@ -33,6 +33,9 @@ exports.publishArticles = (req, res) => {
   model.createArticle(article, id, (error, result) => {
     if (error) {
       res.send(error.message);
+      res.status(400).json({
+        message: "Vous n'avez pas renseigné tout les champs",
+      });
     }
     res.status(200).json(result);
   });
@@ -71,8 +74,7 @@ exports.updateArticles = (req, res) => {
             content_article,
             author_article,
             video,
-            id,
-           
+            id,         
   };        
 
   model.updateArticles(article_id, article, id, (error, result) => {
