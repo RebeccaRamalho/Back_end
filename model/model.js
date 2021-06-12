@@ -130,11 +130,11 @@ exports.updateArticles = (article_id, article, admin_id, callback) => {
 /*9_user i want to add a review*/
 exports.addAReview = (review, callback) => {
   db.query(
-    `INSERT INTO reviewer (last_name, first_name, opinion, role) values ('${mysql.escape(
+    `INSERT INTO reviewer (last_name, first_name, opinion, role) values (${mysql.escape(
       review.last_name
-    )}', '${mysql.escape(review.first_name)}', '${mysql.escape(
+    )}, ${mysql.escape(review.first_name)}, ${mysql.escape(
       review.opinion
-    )}', '${mysql.escape(review.role)}');`,
+    )}, ${mysql.escape(review.role)});`,
 
     (err, result) => {
       if (err) {
