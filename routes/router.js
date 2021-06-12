@@ -14,17 +14,17 @@ router
 
 ///// route articles
 router
-  .post("/api/articles", isAuth, controller.publishArticles) 
+  .post("/api/article", isAuth, controller.publishArticles) // FRONT A SECURISER DS LA PAGE ADMIN
   .get("/api/articles", isAuth, controller.getArticles) // FRONT A SECURISER DS LA PAGE ADMIN
   .delete("/api/article/:article_id", isAuth, controller.deleteArticles) // FRONT A SECURISER DS LA PAGE ADMIN
-  .put("/api/articles/:article_id", isAuth, controller.updateArticles) // FRONT A SECURISER DS LA PAGE ADMIN
-  .get("/api/articles/:tags", controller.getArticlesTag)
   .get("/api/dernierArticles", controller.getLastArticles)
-  .get("/api/articleDetails/:article_id", controller.articleDetails);
-  // REVIEW 
-  router
+  .get("/api/articleDetails/:article_id", controller.articleDetails)
+  .get("/api/articles/:tags", controller.getArticlesTag)
+  .put("/api/articles/:article_id", isAuth, controller.updateArticles);
+
+////// route revievers
+  router.post("/api/votrePetitMot", controller.postReview)
   .get("/api/votrePetitMot", controller.getReview)
-  .post("/api/votrePetitMot", controller.postReview)
   .delete("/api/votrePetitMot/:id", isAuth, controller.deleteReview); // FRONT A SECURISER DS LA PAGE ADMIN
 
 router.use("*", (request, response) => {

@@ -4,24 +4,27 @@ require("dotenv").config();
 
 /*Admin i want to create an article*/
 exports.publishArticles = (req, res) => {
-  const { id } = req.admin;
+
+
+  try{
+
   
-
-  console.log("admin", id);
-
+  // const { id } = req.admin;
+  
   const {
     title,
-    img,
+    image,
     tags,
     resume_article,
     content_article,
     author_article,
     video,
   } = req.body;
-
+// console.log('====================================');
+// console.log(req.body.image);
+// console.log('====================================');
   const article = {
     title,
-    img,
     tags,
     resume_article,
     content_article,
@@ -30,17 +33,24 @@ exports.publishArticles = (req, res) => {
     id,
   };
 
-  model.createArticle(article, id, (error, result) => {
-    if (error) {
-      res.send(error.message);
-    }
-    res.status(200).json(result);
-  });
+//   model.createArticle(article, id, (error, result) => {
+//     if (error) {
+//       res.send(error.message);
+//       res.status(400).json({
+//         message: "Vous n'avez pas renseigné tout les champs",
+//       });
+//     }
+//     res.status(200).json(result);
+//   });
+} catch(err){
+console.log(err);
+
+}
 };
 
 /*Admin i want to see all the articles */
 exports.getArticles = (req, res) => {
-  model.getAllArticle((error, result) => {
+  model.getallArticle((error, result) => {
     if (error) {
       res.send(error.message);
     }
@@ -52,7 +62,7 @@ exports.updateArticles = (req, res) => {
   const { id } = req.admin;
   // const {article_id} = req.params;
 
-  const { article_id, } = req.params;
+  const { article_id } = req.params;
   const { title, 
           img, 
           tags, 
@@ -71,8 +81,7 @@ exports.updateArticles = (req, res) => {
             content_article,
             author_article,
             video,
-            id,
-           
+            id,         
   };        
 
   model.updateArticles(article_id, article, id, (error, result) => {
@@ -113,7 +122,7 @@ exports.deleteArticles = (req, res) => {
     if (error) {
       res.send(error.message);
     }
-    console.log("article deleted");
+    
   });
 };
 
@@ -137,7 +146,7 @@ exports.postReview = (req, res) => {
     //   opinion: result[0].opinion,
     //   role: result[0].role,
     // };
-    console.log("result", result);
+    
 
     res.status(200).json(
       result
