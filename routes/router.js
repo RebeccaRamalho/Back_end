@@ -14,7 +14,7 @@ router
 
 ///// route articles
 router
-  .post("/api/articles", isAuth, controller.publishArticles) // FRONT A SECURISER DS LA PAGE ADMIN
+  .post("/api/article", isAuth, controller.publishArticles) // FRONT A SECURISER DS LA PAGE ADMIN
   .get("/api/articles", isAuth, controller.getArticles) // FRONT A SECURISER DS LA PAGE ADMIN
   .delete("/api/article/:article_id", isAuth, controller.deleteArticles) // FRONT A SECURISER DS LA PAGE ADMIN
   .get("/api/dernierArticles", controller.getLastArticles)

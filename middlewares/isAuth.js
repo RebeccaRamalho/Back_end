@@ -6,12 +6,14 @@ const SECRET = "see_you_in_1M_years";
 
 const isAuth = (request, response, next) => {
   const unproccessedAuthorization = request.headers.authorization;
-
   if (!unproccessedAuthorization) {
+    console.log("if");
     response.status(500).json({
       message: `Token needed.`,
+      
     });
   } else {
+    console.log(request.headers.authorization);
     //I_if authorization we retreive the token when an user try to access
     const token = request.headers.authorization.split(" ")[1];
 
