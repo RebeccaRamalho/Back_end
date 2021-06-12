@@ -112,11 +112,7 @@ exports.delete_an_article = (article_id, callback) => {
 // model non async pour la modification d'un article
 exports.updateArticles = (article_id, article, admin_id, callback) => {
   db.query(
-    `INSERT INTO reviewer (last_name, first_name, opinion, role) values (${mysql.escape(
-      review.last_name
-    )}, ${mysql.escape(review.first_name)}, ${mysql.escape(
-      review.opinion
-    )}, ${mysql.escape(review.role)});`,
+    `UPDATE article  SET title="${article.title}", img="${article.img}",tags="${article.tags}", resume_article="${article.resume_article}", content_article="${article.content_article}", author_article="${article.author_article}", video="${article.video}" WHERE article_id = ${article_id} ;`,
 
     (err, result) => {
       if (err) {
@@ -148,7 +144,7 @@ exports.addAReview = (review, callback) => {
 /*10_user i want to get all review*/
 exports.getAllReview = (callback) => {
   db.query(
-    `SELECT * FROM reviewer order by id desc limit 3;`,
+    `SELECT * FROM reviewer ;`,
     (err, result) => {
       if (err) {
         callback(err, null);

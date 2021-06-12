@@ -7,13 +7,11 @@ exports.publishArticles = (req, res) => {
 
 
   try{
+  const { id } = req.admin;
 
-  
-  // const { id } = req.admin;
-  
-  const {
+  const  {
     title,
-    image,
+    img,
     tags,
     resume_article,
     content_article,
@@ -31,17 +29,17 @@ exports.publishArticles = (req, res) => {
     author_article,
     video,
     id,
-  };
+  }
 
-//   model.createArticle(article, id, (error, result) => {
-//     if (error) {
-//       res.send(error.message);
-//       res.status(400).json({
-//         message: "Vous n'avez pas renseigné tout les champs",
-//       });
-//     }
-//     res.status(200).json(result);
-//   });
+  model.createArticle(article, id, (error, result) => {
+    if (error) {
+      res.send(error.message);
+      res.status(400).json({
+        message: "Vous n'avez pas renseigné tout les champs",
+      });
+    }
+    res.status(200).json(result);
+  });
 } catch(err){
 console.log(err);
 
@@ -57,6 +55,7 @@ exports.getArticles = (req, res) => {
     res.status(200).json(result);
   });
 };
+
 /*Admin i want to update an article */
 exports.updateArticles = (req, res) => {
   const { id } = req.admin;
@@ -117,12 +116,11 @@ exports.articleDetails = (req, res) => {
 
 /*Admin i want to delete an article */
 exports.deleteArticles = (req, res) => {
-  
+  const { article_id } = req.body; // 
   model.delete_an_article(article_id, (error, result) => {
     if (error) {
       res.send(error.message);
-    }
-    
+    }  
   });
 };
 

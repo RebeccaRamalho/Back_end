@@ -25,7 +25,7 @@ const isAuth = (request, response, next) => {
         response.send(error.message);
       } else {
         /*b_checking of token validity*/
-        const { id, exp } = admin; // where do we retreive the name?
+        const { id } = admin; // where do we retreive the name?
 
         request.admin = { id };
         next();
