@@ -42,13 +42,13 @@ exports.createArticle = (article, admin_id, callback) => {
   db.query(
     `INSERT INTO article(admin_id, title, img, tags, resume_article, content_article, author_article, video) VALUES (${mysql.escape(
       admin_id
-    )},${mysql.escape(article.title)}, ${mysql.escape(
+    )},${mysql.escape(article.title)},${mysql.escape(
       article.img
-    )},${mysql.escape(article.tags)}, ${mysql.escape(
+    )},${mysql.escape(article.tags)},${mysql.escape(
       article.resume_article
-    )} ,${mysql.escape(article.content_article)},${mysql.escape(
+    )},${mysql.escape(article.content_article)},${mysql.escape(
       article.author_article
-    )},${mysql.escape(article.video)});`,
+    )},${mysql.escape(article.video)})`,
     (err, result) => {
       if (err) {
         callback(err, null);
@@ -112,8 +112,12 @@ exports.delete_an_article = (article_id, callback) => {
 // model non async pour la modification d'un article
 exports.updateArticles = (article_id, article, admin_id, callback) => {
   db.query(
-    //  mysql.escape(
-    `UPDATE article  SET title='${article.title}', img='${article.img}',tags='${article.tags}', resume_article='${article.resume_article}', content_article='${article.content_article}', author_article='${article.author_article}', video='${article.video}', admin_id=${admin_id} WHERE article_id = ${article_id};`,
+    `INSERT INTO reviewer (last_name, first_name, opinion, role) values (${mysql.escape(
+      review.last_name
+    )}, ${mysql.escape(review.first_name)}, ${mysql.escape(
+      review.opinion
+    )}, ${mysql.escape(review.role)});`,
+
     (err, result) => {
       if (err) {
         callback(err, null);
@@ -126,11 +130,11 @@ exports.updateArticles = (article_id, article, admin_id, callback) => {
 /*9_user i want to add a review*/
 exports.addAReview = (review, callback) => {
   db.query(
-    `INSERT INTO reviewer (last_name, first_name, opinion, role) values ('${mysql.escape(
+    `INSERT INTO reviewer (last_name, first_name, opinion, role) values (${mysql.escape(
       review.last_name
-    )}', '${mysql.escape(review.first_name)}', '${mysql.escape(
+    )}, ${mysql.escape(review.first_name)}, ${mysql.escape(
       review.opinion
-    )}', '${mysql.escape(review.role)}');`,
+    )}, ${mysql.escape(review.role)});`,
 
     (err, result) => {
       if (err) {
@@ -143,13 +147,16 @@ exports.addAReview = (review, callback) => {
 };
 /*10_user i want to get all review*/
 exports.getAllReview = (callback) => {
-  db.query(`SELECT * FROM reviewer order by id asc limit 3;`, (err, result) => {
-    if (err) {
-      callback(err, null);
-      return;
+  db.query(
+    `SELECT * FROM reviewer order by id desc limit 3;`,
+    (err, result) => {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      callback(null, result);
     }
-    callback(null, result);
-  });
+  );
 };
 /*11_Admin i want to delete a review*/
 exports.delete_an_review = (id, callback) => {
