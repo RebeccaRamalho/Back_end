@@ -11,6 +11,7 @@ const fileUpload = require ("express-fileupload")
 // console.log(___dirname);
 var cors = require("cors");
 
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

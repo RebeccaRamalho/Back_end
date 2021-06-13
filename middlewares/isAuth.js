@@ -5,17 +5,18 @@ const jwt = require("jsonwebtoken");
 const SECRET = "see_you_in_1M_years";
 
 const isAuth = (request, response, next) => {
-  const unproccessedAuthorization = request.headers.authorization;
+  const unproccessedAuthorization = request.body.headers.authorization;
   if (!unproccessedAuthorization) {
-    console.log("if");
+    // console.log("if",request.body.headers.authorization);
     response.status(500).json({
       message: `Token needed.`,
       
     });
   } else {
-    console.log(request.headers.authorization);
+    console.log("else");
+    // console.log(request.body.headers.authorization.split(" ")[1]);
     //I_if authorization we retreive the token when an user try to access
-    const token = request.headers.authorization.split(" ")[1];
+    const token = request.body.headers.authorization.split(" ")[1];
 
     //II_We check if the token is valid or not
     jwt.verify(token, SECRET, (error, admin) => {

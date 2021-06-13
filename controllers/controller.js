@@ -7,7 +7,7 @@ exports.publishArticles = (req, res) => {
 
 
   try{
-  const { id } = req.admin;
+  // const { id } = req.admin;
 
   const  {
     title,
@@ -19,19 +19,20 @@ exports.publishArticles = (req, res) => {
     video,
   } = req.body;
 // console.log('====================================');
-// console.log(req.body.image);
+// console.log(req.body);
 // console.log('====================================');
   const article = {
     title,
     tags,
+    img,
     resume_article,
     content_article,
     author_article,
     video,
-    id,
+    
   }
 
-  model.createArticle(article, id, (error, result) => {
+  model.createArticle(article, (error, result) => {
     if (error) {
       res.send(error.message);
       res.status(400).json({
