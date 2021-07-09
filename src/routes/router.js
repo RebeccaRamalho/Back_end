@@ -1,15 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const isAuth = require("../middlewares/isAuth");
-require("dotenv").config();
-//
+require("../../node_modules/dotenv").config();
+//Controller importation
 const userController = require("../controllers/userController");
 const controller = require("../controllers/controller");
 
 /////route authentification
 router
   .post("/api/adminRegister", userController.signUp) //A FAIRE OU A VOIR ..
-  .post("/api/adminlogin", userController.login) // A SECURISER => FRONT REDIRECTION VERS LA PAGE ADMIN 
+  .post("/api/adminlogin", userController.login) // A SECURISER => FRONT REDIRECTION VERS LA PAGE ADMIN
   .post("/api/logout", userController.logout); // OK
 
 ///// route articles
@@ -23,7 +23,8 @@ router
   .put("/api/articles/:article_id", isAuth, controller.updateArticles);
 
 ////// route revievers
-  router.post("/api/votrePetitMot", controller.postReview)
+router
+  .post("/api/votrePetitMot", controller.postReview)
   .get("/api/votrePetitMot", controller.getReview)
   .delete("/api/votrePetitMot/:id", isAuth, controller.deleteReview); // FRONT A SECURISER DS LA PAGE ADMIN
 

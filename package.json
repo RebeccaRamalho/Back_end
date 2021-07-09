@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/index.js",
-    "server": "nodemon ./src/index.js",
+    "start": "node ./src/server.js",
+    "server": "nodemon ./src/server.js",
     "client": "npm run start --prefix ../hand-of-hope-client",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },

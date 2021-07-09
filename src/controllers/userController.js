@@ -76,7 +76,7 @@ exports.signUp = async (request, response) => {
 
 exports.login = async (request, response) => {
   const { email, user_name, password } = request.body;
- 
+
   try {
     await model.getAdmin(
       email /*what i send to the model*/,
@@ -92,8 +92,6 @@ exports.login = async (request, response) => {
           });
         } else {
           const hash = result[0].password;
-
-         
 
           bcrypt.compare(password, hash, (error, correct) => {
             if (error) {
