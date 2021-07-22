@@ -3,44 +3,83 @@ const { request } = require("express");
 require("dotenv").config();
 
 /*Admin i want to create an article*/
-exports.publishArticles = (req, res) => {
-  try {
-    // const { id } = req.admin;
+exports.publishArticles = async (req, res) => {
+  // try {
+  //   // const { id } = req.admin;
 
-    const {
-      title,
-      image,
-      tags,
-      resume_article,
-      content_article,
-      author_article,
-      video,
-    } = req.body;
-    // console.log('====================================');
-    // console.log(req.body.image);
-    // console.log('====================================');
-    const article = {
-      title,
-      tags,
-      resume_article,
-      content_article,
-      author_article,
-      video,
-      id,
-    };
+  //   const {
+  //     title,
+  //     image,
+  //     tags,
+  //     resume_article,
+  //     content_article,
+  //     author_article,
+  //     video,
+  //   } = req.body;
+  //   // console.log('====================================');
+  //   // console.log(req.body.image);
+  //   // console.log('====================================');
+  //   const article = {
+  //     title,
+  //     tags,
+  //     resume_article,
+  //     content_article,
+  //     author_article,
+  //     video,
+  //     id,
+  //   };
 
-    //   model.createArticle(article, id, (error, result) => {
-    //     if (error) {
-    //       res.send(error.message);
-    //       res.status(400).json({
-    //         message: "Vous n'avez pas renseigné tout les champs",
-    //       });
-    //     }
-    //     res.status(200).json(result);
-    //   });
-  } catch (err) {
-    console.log(err);
+  //   //   model.createArticle(article, id, (error, result) => {
+  //   //     if (error) {
+  //   //       res.send(error.message);
+  //   //       res.status(400).json({
+  //   //         message: "Vous n'avez pas renseigné tout les champs",
+  //   //       });
+  //   //     }
+  //   //     res.status(200).json(result);
+  //   //   });
+  // } catch (err) {
+  //   console.log(err);
+  // }
+  try{
+  // const { id } = req.admin;
+
+  const  {
+    title,
+    img,
+    tags,
+    resume_article,
+    content_article,
+    author_article,
+    video,
+  } = req.body;
+// console.log('====================================');
+// console.log(req.body);
+// console.log('====================================');
+  const article = {
+    title,
+    tags,
+    img,
+    resume_article,
+    content_article,
+    author_article,
+    video,
+    
   }
+
+  model.createArticle(article, (error, result) => {
+    if (error) {
+      res.send(error.message);
+      res.status(400).json({
+        message: "Vous n'avez pas renseigné tout les champs",
+      });
+    }
+    res.status(200).json(result);
+  });
+} catch(err){
+console.log(err);
+
+}
 };
 
 /*Admin i want to see all the articles */
@@ -52,6 +91,7 @@ exports.getArticles = (req, res) => {
     res.status(200).json(result);
   });
 };
+
 /*Admin i want to update an article */
 exports.updateArticles = (req, res) => {
   const { id } = req.admin;
@@ -111,10 +151,11 @@ exports.articleDetails = (req, res) => {
 
 /*Admin i want to delete an article */
 exports.deleteArticles = (req, res) => {
+  const { article_id } = req.body; // 
   model.delete_an_article(article_id, (error, result) => {
     if (error) {
       res.send(error.message);
-    }
+    }  
   });
 };
 
