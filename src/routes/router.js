@@ -5,7 +5,6 @@ require("../../node_modules/dotenv").config();
 //Controller importation
 const userController = require("../controllers/userController");
 const controller = require("../controllers/controller");
-
 /////route authentification
 router
   .post("/api/adminRegister", userController.signUp) //A FAIRE OU A VOIR ..

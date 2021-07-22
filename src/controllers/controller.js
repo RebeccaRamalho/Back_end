@@ -151,6 +151,7 @@ exports.postReview = (req, res) => {
   });
 };
 /*user i want to get all reviews */
+
 exports.getReview = (req, res) => {
   model.getAllReview((error, result) => {
     if (error) {

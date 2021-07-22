@@ -1,5 +1,7 @@
 CREATE DATABASE hand_of_hope;
+
 USE hand_of_hope;
+
 CREATE TABLE reviewer(
     id INT AUTO_INCREMENT PRIMARY KEY,
     last_name VARCHAR(45) NOT NULL, 
