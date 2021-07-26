@@ -3,48 +3,8 @@ const { request } = require("express");
 require("dotenv").config();
 
 /*Admin i want to create an article*/
-exports.publishArticles = async (req, res) => {
-  // try {
-  //   // const { id } = req.admin;
-
-  //   const {
-  //     title,
-  //     image,
-  //     tags,
-  //     resume_article,
-  //     content_article,
-  //     author_article,
-  //     video,
-  //   } = req.body;
-  //   // console.log('====================================');
-  //   // console.log(req.body.image);
-  //   // console.log('====================================');
-  //   const article = {
-  //     title,
-  //     tags,
-  //     resume_article,
-  //     content_article,
-  //     author_article,
-  //     video,
-  //     id,
-  //   };
-
-  //   //   model.createArticle(article, id, (error, result) => {
-  //   //     if (error) {
-  //   //       res.send(error.message);
-  //   //       res.status(400).json({
-  //   //         message: "Vous n'avez pas renseigné tout les champs",
-  //   //       });
-  //   //     }
-  //   //     res.status(200).json(result);
-  //   //   });
-  // } catch (err) {
-  //   console.log(err);
-  // }
-  try{
-  // const { id } = req.admin;
-
-  const  {
+exports.publishArticles = (req, res) => {
+  const {
     title,
     img,
     tags,
@@ -52,39 +12,31 @@ exports.publishArticles = async (req, res) => {
     content_article,
     author_article,
     video,
+    admin_id,
   } = req.body;
-// console.log('====================================');
-// console.log(req.body);
-// console.log('====================================');
+
   const article = {
     title,
-    tags,
     img,
+    tags,
     resume_article,
     content_article,
     author_article,
     video,
-    
-  }
+    admin_id,
+  };
 
   model.createArticle(article, (error, result) => {
     if (error) {
       res.send(error.message);
-      res.status(400).json({
-        message: "Vous n'avez pas renseigné tout les champs",
-      });
     }
     res.status(200).json(result);
   });
-} catch(err){
-console.log(err);
-
-}
 };
 
 /*Admin i want to see all the articles */
 exports.getArticles = (req, res) => {
-  model.getallArticle((error, result) => {
+  model.getllArticle((error, result) => {
     if (error) {
       res.send(error.message);
     }
@@ -151,11 +103,11 @@ exports.articleDetails = (req, res) => {
 
 /*Admin i want to delete an article */
 exports.deleteArticles = (req, res) => {
-  const { article_id } = req.body; // 
+  const { article_id } = req.params; //
   model.delete_an_article(article_id, (error, result) => {
     if (error) {
       res.send(error.message);
-    }  
+    }
   });
 };
 
@@ -169,26 +121,12 @@ exports.postReview = (req, res) => {
     opinion,
     role,
   };
+
   model.addAReview(review, (error, result) => {
     if (error) {
       res.send(error.message);
     }
-    // const reviewDet = {
-    //   last_name: result[0].last_name,
-    //   first_name: result[0].first_name,
-    //   opinion: result[0].opinion,
-    //   role: result[0].role,
-    // };
-
-    res.status(200).json(
-      result
-      // revieuwDetails: {
-      //   last_name: result[0].last_name,
-      //   first_name: result[0].first_name,
-      //   opinion: result[0].opinion,
-      //   role: result[0].role,
-      // },
-    );
+    res.status(200).json(review);
   });
 };
 /*user i want to get all reviews */
@@ -201,9 +139,18 @@ exports.getReview = (req, res) => {
     res.status(200).json(result);
   });
 };
+/*User i want to see the 3 Last review*/
+exports.get3Reviews = (req, res) => {
+  model.getLastReview((error, result) => {
+    if (error) {
+      res.send(error.message);
+    }
+    res.status(200).json(result);
+  });
+};
 /*Admin i want to delete a review */
 exports.deleteReview = (req, res) => {
-  const { id } = req.admin;
+  const { id } = req.params;
 
   model.delete_an_review(id, (error, result) => {
     if (error) {
@@ -215,6 +162,7 @@ exports.deleteReview = (req, res) => {
 /*user i want to get all article tag from a specifiq tag */
 exports.getArticlesTag = (req, res) => {
   const { tags } = req.params;
+  console.log("tags", tags);
   model.getArticlesTag(tags, (error, result) => {
     if (error) {
       res.send(error.message);

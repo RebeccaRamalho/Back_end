@@ -1,14 +1,7 @@
 const db = require("../db");
 const mysql = require("mysql2");
 
-// const { request, response } = require("express");
-
-/////////////////requete pour la database=db.js//////
-
-// ///////CREER UN COMPTE ADMIN
-
 //I_Admin i want to connect
-/*1_checking if admin exist the db*/
 exports.getAdmin = (email, callback) => {
   db.query(
     `SELECT * FROM admins WHERE email = ${mysql.escape(email)};`,
@@ -38,17 +31,29 @@ exports.createAccount = (admin, callback) => {
   );
 };
 /*3_admin i want to create an article*/
-exports.createArticle = (article, admin_id, callback) => {
+exports.createArticle = (article, callback) => {
   db.query(
-    `INSERT INTO article(admin_id, title, img, tags, resume_article, content_article, author_article, video) VALUES (${mysql.escape(
-      admin_id
-    )},${mysql.escape(article.title)},${mysql.escape(
+    `INSERT INTO article(title, img, tags, resume_article, content_article, author_article, video, admin_id) VALUES (
+    ${mysql.escape(
+      article.title)},
+    ${mysql.escape(
       article.img
-    )},${mysql.escape(article.tags)},${mysql.escape(
+    )},
+    ${mysql.escape(
+      article.tags)},
+    ${mysql.escape(
       article.resume_article
-    )},${mysql.escape(article.content_article)},${mysql.escape(
+    )},
+    ${mysql.escape(
+      article.content_article)},
+    ${mysql.escape(
       article.author_article
-    )},${mysql.escape(article.video)})`,
+    )},
+    ${mysql.escape(
+      article.video)}, 
+    ${mysql.escape(
+      article.admin_id
+    )})`,
     (err, result) => {
       if (err) {
         callback(err, null);
@@ -59,8 +64,8 @@ exports.createArticle = (article, admin_id, callback) => {
   );
 };
 
-/*4_Admin i want to see all articles (attention on n'a oublié la possibilité que l'utilisateur puisse avoir accès à tous les articles => à travailler plus tard quand l'asso aura plus de subtance au niveau des articles*/
-exports.getallArticle = (callback) => {
+/*4_Admin i want to see all articles*/
+exports.getllArticle = (callback) => {
   db.query(`select * from article;`, (err, result) => {
     if (err) {
       callback(err, null);
@@ -141,18 +146,16 @@ exports.addAReview = (review, callback) => {
     }
   );
 };
+/*User i want to get the last 3 review*/
 /*10_user i want to get all review*/
-exports.getAllReview = (callback) => {
-  db.query(
-    `SELECT * FROM reviewer ;`,
-    (err, result) => {
-      if (err) {
-        callback(err, null);
-        return;
-      }
-      callback(null, result);
+exports.getLastReview = (callback) => {
+  db.query(`SELECT * FROM reviewer limit 3;`, (err, result) => {
+    if (err) {
+      callback(err, null);
+      return;
     }
-  );
+    callback(null, result);
+  });
 };
 /*11_Admin i want to delete a review*/
 exports.delete_an_review = (id, callback) => {
@@ -167,7 +170,7 @@ exports.delete_an_review = (id, callback) => {
 
 /*12_user i want to get all article tag from a specifiq tag*/
 exports.getArticlesTag = (tags, callback) => {
-  db.query(`SELECT * from article where tags =${tags};`, (err, result) => {
+  db.query(`SELECT * from article where tags ="${tags}";`, (err, result) => {
     if (err) {
       callback(err, null);
       return;
