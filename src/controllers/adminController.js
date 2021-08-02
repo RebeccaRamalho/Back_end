@@ -1,4 +1,4 @@
-const model = require("../model/model");
+const model = require("../model/adminModel");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -7,9 +7,9 @@ const cookie = require("cookie-parser");
 const SECRET = "see_you_in_1M_years";
 const MAXAGE = Math.floor(Date.now() / 1000) + 60 * 60; // 1 hour of expiration
 
-/*A_INSCRIPTION */
+/*A_ATUHENTIFICATION */
 
-/*I_creation of a admin*/
+/*I_Inscription*/
 
 exports.signUp = async (request, response) => {
   const { email, user_name, password } = request.body;
@@ -43,7 +43,7 @@ exports.signUp = async (request, response) => {
             const admin = {
               email,
               user_name,
-              password:hash,
+              password: hash,
             };
 
             console.log("admin", admin);
@@ -73,7 +73,7 @@ exports.signUp = async (request, response) => {
   }
 };
 
-/*A_Authentification */
+/*II_Login */
 
 exports.login = async (request, response) => {
   const { email, user_name, password } = request.body;
@@ -139,8 +139,139 @@ exports.login = async (request, response) => {
   }
 };
 
-/*B_Logout*/
+/*III_Logout*/
 
 exports.logout = (request, response) => {
   response.clearCookie("authcookie");
+};
+
+/*B_CRUD REQUEST NOT RELATED TO AUTHENTIFICATION**/
+
+/*CREATE*/
+
+/*admin i want to create an article*/
+exports.publishArticles = (req, res) => {
+  const {
+    title,
+    img,
+    tags,
+    resume_article,
+    content_article,
+    author_article,
+    video,
+    admin_id,
+  } = req.body;
+
+  const article = {
+    title,
+    img,
+    tags,
+    resume_article,
+    content_article,
+    author_article,
+    video,
+    admin_id,
+  };
+
+  model.createArticle(article, (error, result) => {
+    if (error) {
+      res.send(error.message);
+    }
+    res.status(200).json(result);
+  });
+};
+
+/*READ*/
+
+/*admin i want to see all the articles */
+exports.getArticles = (req, res) => {
+  model.getllArticle((error, result) => {
+    if (error) {
+      res.send(error.message);
+    }
+    res.status(200).json(result);
+  });
+};
+
+/*admin i want to get all reviews */
+exports.getReview = (req, res) => {
+  model.getAllReview((error, result) => {
+    if (error) {
+      res.send(error.message);
+    }
+    res.status(200).json(result);
+  });
+};
+
+/*admin i want to see the details of an article*/
+exports.articleDetails = (req, res) => {
+  const { article_id } = req.params;
+
+  model.getArticleDetails(article_id, (error, result) => {
+    if (error) {
+      res.send(error.message);
+    }
+    res.status(200).json(result);
+  });
+};
+
+/*UPTDATE*/
+
+/*admin i want to update an article */
+exports.updateArticles = (req, res) => {
+  const { id } = req.admin;
+  // const {article_id} = req.params;
+
+  const { article_id } = req.params;
+  const {
+    title,
+    img,
+    tags,
+    resume_article,
+    content_article,
+    author_article,
+    video,
+  } = req.body;
+
+  const article = {
+    title,
+    img,
+    tags,
+    resume_article,
+    content_article,
+    author_article,
+    video,
+    id,
+  };
+
+  model.updateArticles(article_id, article, id, (error, result) => {
+    if (error) {
+      res.send(error.message);
+    }
+    res.status(200).json(result);
+  });
+};
+
+/*DELETE*/
+
+/*admin i want to delete an article */
+exports.deleteArticles = (req, res) => {
+  const { article_id } = req.params; //
+  model.delete_an_article(article_id, (error, result) => {
+    if (error) {
+      res.send(error.message);
+    }
+  });
+};
+
+/*admin i want to delete a review */
+exports.deleteReview = (req, res) => {
+  const { id } = req.params;
+
+  model.delete_an_review(id, (error, result) => {
+    if (error) {
+      res.send(error.message);
+    }
+    res.status(200).json(result);
+  });
 };
