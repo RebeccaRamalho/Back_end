@@ -44,7 +44,7 @@ exports.getArticleDetails = (article_id, callback) => {
 
 /*user i want to get the last 3 review*/
 exports.getLastReview = (callback) => {
-  db.query(`SELECT * FROM reviewer limit 3;`, (err, result) => {
+  db.query(`SELECT * FROM reviewer order by id desc limit 3;`, (err, result) => {
     if (err) {
       callback(err, null);
       return;

@@ -119,8 +119,9 @@ exports.login = async (request, response) => {
               });
             }
             request.Admin = Admin;
-
+            //
             response.cookie("authcookie", token, { maxAge: MAXAGE });
+            //
             response.status(200).json({
               token: token,
               Admin: {

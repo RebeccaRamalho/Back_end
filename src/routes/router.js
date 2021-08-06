@@ -10,45 +10,42 @@ router
   /*CREATE*/
   .post("/api/adminRegister", adminController.signUp) //ok!
   .post("/api/adminlogin", adminController.login) //ok!
-  .post("/api/article", isAuth, adminController.publishArticles) //ok!
+  .post("/api/article", adminController.publishArticles) //ok!
   .post("api/logout", adminController.logout) //pas ok
   /*READ*/
-  .get("/api/votrePetitMot", isAuth, adminController.getReview) //ok back!//pas ok front
-  .get("/api/articles", isAuth, adminController.getArticles) //ok back!//pas ok front
+  .get("/api/votrePetitMot", adminController.getReview) //ok back!//pas ok front
+  .get("/api/articles", adminController.getArticles) //ok back!//pas ok front
   .get(
     "/api/adminArticleDetails/:article_id",
     isAuth,
     adminController.articleDetails
   )
   /*UPDATE*/
-  .put("/api/articles/:article_id", isAuth, adminController.updateArticles) //ok!
+  .put("/api/articles/:article_id", adminController.updateArticles) //ok!
   /*DELETE*/
-  .delete("/api/article/:article_id", isAuth, adminController.deleteArticles) //ok!
-  .delete("/api/votrePetitMot/:id", isAuth, adminController.deleteReview); //ok!
-/*Bonus
+  .delete("/api/article/:article_id", adminController.deleteArticles) //ok!
+  .delete("/api/votrePetitMot/:id", adminController.deleteReview); //ok!
+/*V2
     A propos: CRUD,
-    S'engager: CRUD,
-    Don: CRUD
-  */
+    Contact: CRUD,
+*/
 
 //User_routes
 router
   /*CREATE*/
-  .post("/api/votrePetitMot", controller.postReview) //ok!
+  .post("/api/votrePetitMot", controller.postReview) //ok back and front
   /*READ*/
-  .get("/api/derniersArticles", controller.getLastArticles) //ok!
-  .get("/api/articleDetails/:article_id", controller.articleDetails) //ok
-  .get("/api/derniersPetitMots", controller.get3Reviews) //ok!
-  .get("/api/allArticles", controller.getArticles); //ok!
-  /*
+  .get("/api/derniersArticles", controller.getLastArticles) //ok back and front!
+  .get("/api/derniersPetitMots", controller.get3Reviews) //ok back and front
+  .get("/api/allArticles", controller.getArticles) //ok!
+  .get("/api/articleDetails/:article_id", controller.articleDetails); //ok
+  /*V2
     A propos: R,
-    S'engager: R,
-    Don: R
+    Contact: R,
   */
 
   /*Bonus
   Tags:  .get("/api/articles/:tags", controller.getArticlesTag) //ok côté user pas admin
-
   */
 
 router.use("*", (request, response) => {
