@@ -10,7 +10,6 @@ CREATE TABLE reviewer(
     role VARCHAR (20)
 );
 
-
 CREATE TABLE article(
     article_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(45) NOT NULL,
@@ -21,7 +20,6 @@ CREATE TABLE article(
     admin_id INT,
     FOREIGN KEY (admin_id) REFERENCES admins (admin_id)
 );
-
 CREATE TABLE admins (
     admin_id INT AUTO_INCREMENT PRIMARY KEY,
     user_name VARCHAR (15),

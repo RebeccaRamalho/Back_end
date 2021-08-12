@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const cookie = require("cookie-parser");
+const ApiError = require("../error/ApiError")
 
 const SECRET = "see_you_in_1M_years";
 const MAXAGE = Math.floor(Date.now() / 1000) + 60 * 60; // 1 hour of expiration
@@ -46,7 +47,6 @@ exports.signUp = async (request, response) => {
               password: hash,
             };
 
-            console.log("admin", admin);
 
             /*c_we send user's data to the model*/
             model.createAccount(admin, (error, result) => {
@@ -75,23 +75,33 @@ exports.signUp = async (request, response) => {
 
 /*II_Login */
 
-exports.login = async (request, response) => {
+exports.login = async (request, response, next) => {
   const { email, user_name, password } = request.body;
 
   try {
-    await model.getAdmin(email, async (error, result) => {
+    await model.getAdmin(email, (error, result) => {
       /*1-Error managment */
       /*a_Server error managment*/
       if (error) {
-        response.send(error.message);
+        next(ApiError.internal('something went wrong'))
+
       } else if (result.length == 0) {
         //
-        response.status(409).json({
-          message: "Email doesn't exist in the db",
-        });
+        next(ApiError.Conflict("l'email n'existe pas dans la base de donnée"))
+
+      } else if (email === "" || user_name === "" || password === "") {
+        next(ApiError.badRequest('Les champs doivent être remplis'))
+
+      } else if (
+        typeof email !== "string" ||
+        typeof user_name !== "string" ||
+        typeof password !== "string"
+      ) {
+        next(ApiError.badRequest("Les champs doivent être des chaînes de caractères"))
+
       } else {
         const hash = result[0].password;
-        console.log("hash ", result[0].password);
+
 
         bcrypt.compare(password, hash, (error, correct) => {
           if (error) {
@@ -118,9 +128,11 @@ exports.login = async (request, response) => {
                 message: "Server Error",
               });
             }
-            request.Admin = Admin;
+            request.Admin = Admin;           
             //
             response.cookie("authcookie", token, { maxAge: MAXAGE });
+            //
+            // localStorage.setItem('tokens', JSON.stringify(token));
             //
             response.status(200).json({
               token: token,
@@ -151,7 +163,7 @@ exports.logout = (request, response) => {
 /*CREATE*/
 
 /*admin i want to create an article*/
-exports.publishArticles = (req, res) => {
+exports.publishArticles = (req, res, next) => {
   const {
     title,
     img,
@@ -176,9 +188,22 @@ exports.publishArticles = (req, res) => {
 
   model.createArticle(article, (error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal('something went wrong'))
+    } else if (
+      title === "" ||
+      img === "" ||
+      tags === "" ||
+      resume_article === "" ||
+      content_article === "" ||
+      author_article === "" ||
+      video === "" ||
+      admin_id === ""
+    ) {
+      next(ApiError.badRequest('Les champs doivent être remplis'))
     }
-    res.status(200).json(result);
+    else{
+      res.status(200).json(result);
+    }
   });
 };
 
