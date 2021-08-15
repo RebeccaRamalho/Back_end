@@ -11,19 +11,25 @@ router
   .post("/api/adminRegister", adminController.signUp) //ok!
   .post("/api/adminlogin", adminController.login) //ok!
   .post("/api/article", isAuth, adminController.publishArticles) //ok!
-  .post("api/logout", adminController.logout) //pas ok
   /*READ*/
-  .get("/api/votrePetitMot", isAuth, adminController.getReview) //ok back!//pas ok front
-  .get("/api/articles", isAuth, adminController.getArticles) //ok back!//pas ok front
-  .get(
-    "/api/adminArticleDetails/:article_id", isAuth,
-    adminController.articleDetails
-  )
+  .post("/api/votrePetitMot", isAuth, adminController.getReview) //ok!
+  .post("/api/articles", isAuth, adminController.getArticles) //
+
+  //a refacto avec isAuth
+  // .get(
+  //   "/api/adminArticleDetails/:article_id", isAuth,
+  //   adminController.articleDetails
+  // )
+  .get("/api/adminArticleDetails/:article_id", adminController.articleDetails)//test
+  .get("/api/votrePetitMot/:id", adminController.getOneReview)
   /*UPDATE*/
-  .put("/api/articles/:article_id",  isAuth,adminController.updateArticles) //ok!
+  // .put("/api/articles/:article_id", isAuth, adminController.updateArticles) //ok!
+  .put("/api/article/:article_id", adminController.updateArticles) //ok!
   /*DELETE*/
-  .delete("/api/article/:article_id", isAuth, adminController.deleteArticles) //ok!
-  .delete("/api/votrePetitMot/:id", isAuth, adminController.deleteReview); //ok!
+  // .delete("/api/article/:article_id", isAuth, adminController.deleteArticles) //ok!
+  .delete("/api/article/:article_id", adminController.deleteArticles)
+  // .delete("/api/votrePetitMot/:id", isAuth, adminController.deleteReview); //ok!
+  .delete("/api/votrePetitMot/:id", adminController.deleteReview); //ok!
 /*V2
     A propos: CRUD,
     Contact: CRUD,
@@ -37,13 +43,13 @@ router
   .get("/api/derniersArticles", controller.getLastArticles) //ok back and front!
   .get("/api/derniersPetitMots", controller.get3Reviews) //ok back and front
   .get("/api/allArticles", controller.getArticles) //ok!
-  .get("/api/articleDetails/:article_id", controller.articleDetails); //ok
-  /*V2
+  .get("/api/article/:article_id", controller.articleDetails); //ok
+/*V2
     A propos: R,
     Contact: R,
   */
 
-  /*Bonus
+/*Bonus
   Tags:  .get("/api/articles/:tags", controller.getArticlesTag) //ok côté user pas admin
   */
 

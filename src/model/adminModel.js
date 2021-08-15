@@ -81,6 +81,17 @@ exports.getArticleDetails = (article_id, callback) => {
   );
 };
 
+/*admin i want to get one review*/
+exports.getAReview = (id, callback) => {
+  db.query(`SELECT * FROM reviewer WHERE id=${id};`, (err, result) => {
+    if (err) {
+      callback(err, null);
+      return;
+    }
+    callback(null, result);
+  });
+};
+
 /*admin i want to get all reviews*/
 exports.getAllReview = (callback) => {
   db.query(`SELECT * FROM reviewer;`, (err, result) => {
