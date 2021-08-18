@@ -1,6 +1,7 @@
 const model = require("../model/model");
 const { request } = require("express");
 require("dotenv").config();
+const ApiError = require("../error/ApiError");
 
 /*READ*/
 
@@ -8,7 +9,7 @@ require("dotenv").config();
 exports.getArticles = (req, res) => {
   model.getllArticle((error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
     }
     res.status(200).json(result);
   });
@@ -18,7 +19,7 @@ exports.getArticles = (req, res) => {
 exports.getLastArticles = (req, res) => {
   model.get3LastArticle((error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
     }
     res.status(200).json(result);
   });
@@ -30,17 +31,17 @@ exports.articleDetails = (req, res) => {
 
   model.getArticleDetails(article_id, (error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
     }
     res.status(200).json(result);
   });
 };
 
-/*User i want to see the 3 Last review*/
+/*user i want to see the 3 Last review*/
 exports.get3Reviews = (req, res) => {
   model.getLastReview((error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
     }
     res.status(200).json(result);
   });
@@ -52,7 +53,7 @@ exports.getArticlesTag = (req, res) => {
   console.log("tags", tags);
   model.getArticlesTag(tags, (error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
     }
     res.status(200).json(result);
   });
@@ -73,7 +74,7 @@ exports.postReview = (req, res) => {
 
   model.addAReview(review, (error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
     }
     res.status(200).json(review);
   });

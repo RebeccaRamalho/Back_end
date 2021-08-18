@@ -20,7 +20,7 @@ exports.createAccount = (admin, callback) => {
 };
 
 /*admin i want to create an article*/
-exports.createArticle = (article, callback) => {
+exports.createArticle = (article, admin_id, callback) => {
   db.query(
     `INSERT INTO article(title, img, tags, resume_article, content_article, author_article, video, admin_id) VALUES (
         ${mysql.escape(article.title)},
@@ -30,7 +30,7 @@ exports.createArticle = (article, callback) => {
         ${mysql.escape(article.content_article)},
         ${mysql.escape(article.author_article)},
         ${mysql.escape(article.video)}, 
-        ${mysql.escape(article.admin_id)})`,
+        ${mysql.escape(admin_id)})`,
     (err, result) => {
       if (err) {
         callback(err, null);
@@ -117,9 +117,9 @@ exports.getArticlesTag = (tags, callback) => {
 /*UPTDATE*/
 
 /*admin i want to update an article*/
-exports.updateArticles = (article_id, article, admin_id, callback) => {
+exports.updateArticles = (article_id, admin_id,  article, callback) => {
   db.query(
-    `UPDATE article  SET title="${article.title}", img="${article.img}",tags="${article.tags}", resume_article="${article.resume_article}", content_article="${article.content_article}", author_article="${article.author_article}", video="${article.video}" WHERE article_id = ${article_id} ;`,
+    `UPDATE article  SET title="${article.title}", img="${article.img}",tags="${article.tags}", resume_article="${article.resume_article}", content_article="${article.content_article}", author_article="${article.author_article}", video="${article.video}" WHERE article_id = ${article_id} AND admin_id= ${admin_id} ;`,
 
     (err, result) => {
       if (err) {

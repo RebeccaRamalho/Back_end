@@ -6,9 +6,9 @@ const SECRET = "see_you_in_1M_years";
 
 const isAuth = (req, res, next) => {
 
-  console.log("req", req);
+  console.log("request Headers", req.body);
 
-  const authorization = req.body.headers.Authorization;
+  const authorization = req.headers.authorization || req.body.headers.Authorization;
   
   try {
     if (!authorization) {

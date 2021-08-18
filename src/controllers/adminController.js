@@ -6,13 +6,13 @@ const cookie = require("cookie-parser");
 const ApiError = require("../error/ApiError");
 
 const SECRET = "see_you_in_1M_years";
-const MAXAGE = Math.floor(Date.now() / 1000) + 60 * 60 * 60; // 1 hour of expiration
+const MAXAGE = Math.floor(Date.now() / 1000) + 60 * 60; // 1 hour of expiration
 
 /*A_ATUHENTIFICATION */
 
 /*I_Inscription*/
 
-exports.signUp = async (request, response) => {
+exports.signUp = async (request, response, next) => {
   const { email, user_name, password } = request.body;
 
   try {
@@ -25,10 +25,23 @@ exports.signUp = async (request, response) => {
           response.send(error.message);
         } else if (result.length !== 0) {
           /*b_User error managment (i check if username already exist in db)*/
-          response.status(409).json({
-            message:
-              "You have a great taste! An user with this email already exist in db, sorry! :(",
-          });
+          next(
+            ApiError.Conflict(
+              "un utilisateur avec cette email existe déjà dans la base de donnée"
+            )
+          );
+        } else if (
+          typeof email !== "string" ||
+          typeof user_name !== "string" ||
+          typeof password !== "string"
+        ) {
+          next(
+            ApiError.badRequest(
+              "Les champs doivent être une chaîne de caractères"
+            )
+          );
+        } else if (email === "" || user_name === "" || password === "") {
+          next(ApiError.badRequest("Tous les champs doivent être remplis"));
         } else {
           /*2-Password hashing*/
 
@@ -82,10 +95,11 @@ exports.login = async (request, response, next) => {
       if (error) {
         next(ApiError.internal("something went wrong"));
       } else if (result.length == 0) {
-        //
-        next(ApiError.Conflict("l'email n'existe pas dans la base de donnée"));
+        next(
+          ApiError.Unauthorized("l'email n'existe pas dans la base de donnée")
+        );
       } else if (email === "" || user_name === "" || password === "") {
-        next(ApiError.badRequest("Les champs doivent être remplis"));
+        next(ApiError.badRequest("Tous les champs doivent être remplis"));
       } else if (
         typeof email !== "string" ||
         typeof user_name !== "string" ||
@@ -93,7 +107,7 @@ exports.login = async (request, response, next) => {
       ) {
         next(
           ApiError.badRequest(
-            "Les champs doivent être des chaînes de caractères"
+            "Les champs doivent être une chaîne de caractères"
           )
         );
       } else {
@@ -132,7 +146,6 @@ exports.login = async (request, response, next) => {
             };
             // request.Admin = { admin_id }
             //
-            console.log("admin_id AdminController", request.Admin.admin_id);
             // response.cookie("authcookie", token, { maxAge: MAXAGE });
             //
             response.status(200).json({
@@ -163,9 +176,9 @@ exports.login = async (request, response, next) => {
 
 /*CREATE*/
 
-
 /*admin i want to create an article*/
 exports.publishArticles = (req, res, next) => {
+  const { admin_id } = req.Admin;
   const {
     title,
     img,
@@ -174,7 +187,6 @@ exports.publishArticles = (req, res, next) => {
     content_article,
     author_article,
     video,
-    admin_id,
   } = req.body;
 
   const article = {
@@ -185,10 +197,9 @@ exports.publishArticles = (req, res, next) => {
     content_article,
     author_article,
     video,
-    admin_id,
   };
 
-  model.createArticle(article, (error, result) => {
+  model.createArticle(article, admin_id, (error, result) => {
     if (error) {
       next(ApiError.internal("something went wrong"));
     } else if (
@@ -197,11 +208,26 @@ exports.publishArticles = (req, res, next) => {
       tags === "" ||
       resume_article === "" ||
       content_article === "" ||
-      author_article === "" ||
-      video === "" ||
-      admin_id === ""
+      author_article === ""
     ) {
       next(ApiError.badRequest("Les champs doivent être remplis"));
+    } else if (
+      typeof title !== "string" ||
+      typeof img !== "string" ||
+      typeof tags !== "string" ||
+      typeof resume_article !== "string" ||
+      typeof content_article !== "string" ||
+      typeof author_article !== "string"
+    ) {
+      next(
+        ApiError.badRequest("Les champs doivent être des chaines de caractères")
+      );
+    } else if (!admin_id) {
+      next(
+        ApiError.Unauthorized(
+          "Vous devez être connecté pour accéder à cette ressource"
+        )
+      );
     } else {
       res.status(200).json(result);
     }
@@ -212,10 +238,10 @@ exports.publishArticles = (req, res, next) => {
 
 /*admin i want to see all the articles */
 exports.getArticles = (req, res) => {
+  const { admin_id } = req.Admin;
   const result = model.getllArticle((error, result) => {
     if (error) {
-      console.log("getArticlesError", error);
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
     }
     res.status(200).json(result);
   });
@@ -223,10 +249,17 @@ exports.getArticles = (req, res) => {
 
 /*admin i want to get one review*/
 exports.getOneReview = (req, res) => {
+  const { admin_id } = req.Admin;
   const { id } = req.params;
-  model.getAReview(id,(error, result) => {
+  model.getAReview(id, (error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
+    } else if (!admin_id) {
+      next(
+        ApiError.Unauthorized(
+          "Vous devez être connecté pour accéder à cette ressource"
+        )
+      );
     }
     res.status(200).json(result);
   });
@@ -234,9 +267,16 @@ exports.getOneReview = (req, res) => {
 
 /*admin i want to get all reviews */
 exports.getReview = (req, res) => {
+  const { admin_id } = req.Admin;
   model.getAllReview((error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
+    } else if (!admin_id) {
+      next(
+        ApiError.Unauthorized(
+          "Vous devez être connecté pour accéder à cette ressource"
+        )
+      );
     }
     res.status(200).json(result);
   });
@@ -244,11 +284,18 @@ exports.getReview = (req, res) => {
 
 /*admin i want to see the details of an article*/
 exports.articleDetails = (req, res) => {
+  const { admin_id } = req.Admin;
   const { article_id } = req.params;
 
   model.getArticleDetails(article_id, (error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
+    } else if (!admin_id) {
+      next(
+        ApiError.Unauthorized(
+          "Vous devez être connecté pour accéder à cette ressource"
+        )
+      );
     }
     res.status(200).json(result);
   });
@@ -257,8 +304,8 @@ exports.articleDetails = (req, res) => {
 /*UPTDATE*/
 
 /*admin i want to update an article */
-exports.updateArticles = (req, res) => {
-  const { id } = req.admin;
+exports.updateArticles = (req, res, next) => {
+  const { admin_id } = req.Admin;
   const { article_id } = req.params;
   const {
     title,
@@ -280,9 +327,34 @@ exports.updateArticles = (req, res) => {
     video,
   };
 
-  model.updateArticles(article_id, article, (error, result) => {
+  model.updateArticles(article_id, admin_id, article, (error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
+    } else if (!admin_id) {
+      next(
+        ApiError.Unauthorized(
+          "Vous devez être connecté pour accéder à cette ressource"
+        )
+      );
+    } else if (
+      typeof title !== "string" ||
+      typeof tags !== "string" ||
+      typeof resume_article !== "string" ||
+      typeof content_article !== "string" ||
+      typeof author_article !== "string"
+    ) {
+      next(
+        ApiError.badRequest("Les champs doivent être des chaines de caractères")
+      );
+    } else if (
+      typeof title !== "" ||
+      typeof tags !== "" ||
+      typeof img !== "" ||
+      typeof resume_article !== "" ||
+      typeof content_article !== "" ||
+      typeof author_article !== ""
+    ) {
+      next(ApiError.badRequest("Les champs ne doivent pas être vides"));
     }
     res.status(200).json(result);
   });
@@ -292,21 +364,35 @@ exports.updateArticles = (req, res) => {
 
 /*admin i want to delete an article */
 exports.deleteArticles = (req, res) => {
+  const { admin_id } = req.Admin;
   const { article_id } = req.params; //
   model.delete_an_article(article_id, (error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
+    } else if (!admin_id) {
+      next(
+        ApiError.Unauthorized(
+          "Vous devez être connecté pour accéder à cette ressource"
+        )
+      );
     }
   });
 };
 
 /*admin i want to delete a review */
 exports.deleteReview = (req, res) => {
+  const { admin_id } = req.Admin;
   const { id } = req.params;
 
   model.delete_an_review(id, (error, result) => {
     if (error) {
-      res.send(error.message);
+      next(ApiError.internal("something went wrong"));
+    } else if (!admin_id) {
+      next(
+        ApiError.Unauthorized(
+          "Vous devez être connecté pour accéder à cette ressource"
+        )
+      );
     }
     res.status(200).json(result);
   });

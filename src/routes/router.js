@@ -8,28 +8,23 @@ const controller = require("../controllers/controller");
 //Admin_routes
 router
   /*CREATE*/
-  .post("/api/adminRegister", adminController.signUp) //ok!
-  .post("/api/adminlogin", adminController.login) //ok!
-  .post("/api/article", isAuth, adminController.publishArticles) //ok!
+  .post("/api/adminRegister", adminController.signUp) 
+  .post("/api/adminlogin", adminController.login) 
+  .post("/api/article", isAuth, adminController.publishArticles) 
   /*READ*/
-  .post("/api/votrePetitMot", isAuth, adminController.getReview) //ok!
-  .post("/api/articles", isAuth, adminController.getArticles) //
-
-  //a refacto avec isAuth
-  // .get(
-  //   "/api/adminArticleDetails/:article_id", isAuth,
-  //   adminController.articleDetails
-  // )
-  .get("/api/adminArticleDetails/:article_id", adminController.articleDetails)//test
-  .get("/api/votrePetitMot/:id", adminController.getOneReview)
+  .post("/api/votrePetitMot", isAuth, adminController.getReview) 
+  .post("/api/articles", isAuth, adminController.getArticles)
+  .post(
+    "/api/adminArticleDetails/:article_id", isAuth,
+    adminController.articleDetails
+  )
+  .post("/api/votrePetitMot/:id", isAuth, adminController.getOneReview)//a ref
   /*UPDATE*/
-  // .put("/api/articles/:article_id", isAuth, adminController.updateArticles) //ok!
-  .put("/api/article/:article_id", adminController.updateArticles) //ok!
+  .put("/api/article/:article_id", isAuth, adminController.updateArticles)
   /*DELETE*/
-  // .delete("/api/article/:article_id", isAuth, adminController.deleteArticles) //ok!
-  .delete("/api/article/:article_id", adminController.deleteArticles)
+  .delete("/api/article/:article_id", isAuth, adminController.deleteArticles)
   // .delete("/api/votrePetitMot/:id", isAuth, adminController.deleteReview); //ok!
-  .delete("/api/votrePetitMot/:id", adminController.deleteReview); //ok!
+  .delete("/api/votrePetitMot/:id", isAuth, adminController.deleteReview); //L
 /*V2
     A propos: CRUD,
     Contact: CRUD,
@@ -38,7 +33,7 @@ router
 //User_routes
 router
   /*CREATE*/
-  .post("/api/votrePetitMot", controller.postReview) //ok back and front
+  .post("/api/votrePetitMot", controller.postReview) //a ref
   /*READ*/
   .get("/api/derniersArticles", controller.getLastArticles) //ok back and front!
   .get("/api/derniersPetitMots", controller.get3Reviews) //ok back and front
