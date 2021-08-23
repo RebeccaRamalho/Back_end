@@ -1,12 +1,13 @@
+require("dotenv").config();
 const model = require("../model/adminModel");
 const bcrypt = require("bcrypt");
-require("dotenv").config();
+
 const jwt = require("jsonwebtoken");
 const cookie = require("cookie-parser");
 const ApiError = require("../error/ApiError");
 
-const SECRET = "see_you_in_1M_years";
-const MAXAGE = Math.floor(Date.now() / 1000) + 60 * 60; // 1 hour of expiration
+// const SECRET = "see_you_in_1M_years";///test
+const MAXAGE = Math.floor(Date.now() / 1000) + 60 * 60 * 60; // 1 hour of expiration
 
 /*A_ATUHENTIFICATION */
 
@@ -129,15 +130,16 @@ exports.login = async (request, response, next) => {
             user_name: result[0].user_name,
             password: result[0].password,
             email: result[0].email,
-            exp: MAXAGE,
+            exp: MAXAGE, ///////ici qu'on donne un âge au token?
           };
 
-          jwt.sign(Admin, SECRET, (error, token) => {
+          jwt.sign(Admin, process.env.JWT_SECRET, (error, token) => {//test
             if (error) {
               response.status(500).json({
                 message: "Server Error",
               });
             }
+            
             // request.Admin = Admin;  v1
             request.Admin = {
               admin_id: result[0].admin_id,
@@ -149,7 +151,7 @@ exports.login = async (request, response, next) => {
             // response.cookie("authcookie", token, { maxAge: MAXAGE });
             //
             response.status(200).json({
-              token: token,
+              token: token, /// envoie dans les headers
               Admin: {
                 admin_id: result[0].admin_id,
                 user_name: result[0].user_name,
@@ -165,12 +167,6 @@ exports.login = async (request, response, next) => {
     console.error(error);
   }
 };
-
-/*III_Logout*/
-
-// exports.logout = (request, response) => {
-//   response.clearCookie("authcookie");
-// };
 
 /*B_CRUD REQUEST NOT RELATED TO AUTHENTIFICATION**/
 
@@ -198,6 +194,8 @@ exports.publishArticles = (req, res, next) => {
     author_article,
     video,
   };
+
+  console.log("ARticle", req.files);
 
   model.createArticle(article, admin_id, (error, result) => {
     if (error) {

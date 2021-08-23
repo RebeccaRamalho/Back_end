@@ -1,22 +1,25 @@
-const { req, request } = require("express");
-// const SECRET = process.env.SECRET;
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const SECRET = "see_you_in_1M_years";
+
+// const SECRET = process.env.SECRET;
+// const SECRET = "see_you_in_1M_years";
 //
 
 const isAuth = (req, res, next) => {
-
   console.log("request Headers", req.body);
 
-  const authorization = req.headers.authorization || req.body.headers.Authorization;
-  
+  const authorization =
+    req.headers.authorization || req.body.headers.Authorization;
+
   try {
     if (!authorization) {
-      res.status(400).json({ message: "invalid token !" });
+      res.status(400).json({ message: "veuillez vous connecter !" });
     } else {
       const token = authorization.replace("Bearer ", "");
 
-      jwt.verify(token, SECRET, (error, Admin) => {
+      console.log("TOK", token);
+
+      jwt.verify(token, process.env.JWT_SECRET, (error, Admin) => {
         if (error) {
           console.log("AUTHORIZATION ERROR ", error),
             res.status(400).json({
@@ -30,11 +33,9 @@ const isAuth = (req, res, next) => {
         //ce qu'il faudra peut-être récup dans la requête post  Admin.admin_id
 
         next();
-    
       });
     }
   } catch (error) {
-    
     res.status(500).json({
       message: "Désolé, vous n’êtes pas autorisé à accéder à cette page !",
     });
@@ -42,4 +43,3 @@ const isAuth = (req, res, next) => {
 };
 
 module.exports = isAuth;
-
