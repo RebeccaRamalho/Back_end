@@ -6,7 +6,7 @@ const mysql = require("mysql2");
 /*user i want to see all the article*/
 
 exports.getllArticle = (callback) => {
-  db.query(`select * from article;`, (err, result) => {
+  db.execute(`select * from article;`, (err, result) => {
     if (err) {
       callback(err, null);
       return;
@@ -17,7 +17,7 @@ exports.getllArticle = (callback) => {
 
 /*user i want to see the last 3 articles article*/
 exports.get3LastArticle = (callback) => {
-  db.query(
+  db.execute(
     `select * from article order by article_id desc limit 3;`,
     (err, result) => {
       if (err) {
@@ -30,7 +30,7 @@ exports.get3LastArticle = (callback) => {
 };
 /*user i want to see the details of an article*/
 exports.getArticleDetails = (article_id, callback) => {
-  db.query(
+  db.execute(
     `select * from article  where article_id=${article_id};`,
     (err, result) => {
       if (err) {
@@ -44,7 +44,7 @@ exports.getArticleDetails = (article_id, callback) => {
 
 /*user i want to get the last 3 review*/
 exports.getLastReview = (callback) => {
-  db.query(`SELECT * FROM reviewer order by id desc limit 3;`, (err, result) => {
+  db.execute(`SELECT * FROM reviewer order by id desc limit 3;`, (err, result) => {
     if (err) {
       callback(err, null);
       return;
@@ -55,7 +55,7 @@ exports.getLastReview = (callback) => {
 
 /*user i want to get all article tag from a specifiq tag*/
 exports.getArticlesTag = (tags, callback) => {
-  db.query(`SELECT * from article where tags ="${tags}";`, (err, result) => {
+  db.execute(`SELECT * from article where tags ="${tags}";`, (err, result) => {
     if (err) {
       callback(err, null);
       return;
@@ -68,7 +68,7 @@ exports.getArticlesTag = (tags, callback) => {
 
 /*user i want to add a review*/
 exports.addAReview = (review, callback) => {
-  db.query(
+  db.execute(
     `INSERT INTO reviewer (last_name, first_name, opinion, role) values (${mysql.escape(
       review.last_name
     )}, ${mysql.escape(review.first_name)}, ${mysql.escape(

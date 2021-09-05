@@ -1,10 +1,44 @@
 const express = require("express");
+require("dotenv").config();
 const router = express.Router();
 const isAuth = require("../middlewares/isAuth");
-require("../../node_modules/dotenv").config();
+// require("../../node_modules/dotenv").config();
+
 const adminController = require("../controllers/adminController");
 const controller = require("../controllers/controller");
+const cors = require("cors");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_TEST);
+//
 
+//STRIPE
+router.post("/api/stripe/charge", cors(), async(req, res) => {
+  //
+  let { amount, id } = req.body; 
+  //
+  console.log( "amout & id :", amount, id )
+  try{
+    const payment = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: "EUR",
+      description: "Your Company Description",
+      payment_method: id, 
+      confirm: true,
+    })
+    res.json({
+      message: "Paiement réussit",
+      success: true,
+    })
+
+
+  }
+  catch(error){
+    console.error(error)
+    res.json({
+      message: "le paiement à échoué",
+      success: false,
+    })
+  }
+})
 //Admin_routes
 router
   /*CREATE*/
@@ -38,7 +72,7 @@ router
   .get("/api/derniersArticles", controller.getLastArticles) //ok back and front!
   .get("/api/derniersPetitMots", controller.get3Reviews) //ok back and front
   .get("/api/allArticles", controller.getArticles) //ok!
-  .get("/api/article/:article_id", controller.articleDetails); //ok
+  .get("/api/visitorArticle/:article_id", controller.articleDetails); //ok
 /*V2
     A propos: R,
     Contact: R,

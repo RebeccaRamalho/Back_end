@@ -7,9 +7,7 @@ const routesHandler = require("./routes/router.js");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const apiErrorHandler = require("./error/api-error-handler");
-// const require = require('stripe')(process.env.STRIPE_SECRET);
-// const { flash } = require("express-flash-message");
-
+const stripe = require("stripe")(process.env.STRIPE_SECRET_TEST);
 const cors = require("cors");
 
 app.use(cors());
@@ -25,6 +23,8 @@ app.use(fileUpload());
 app.use(express.json());
 app.use("/", routesHandler);
 app.use(apiErrorHandler);
+///
+
 ///
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
