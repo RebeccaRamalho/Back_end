@@ -64,7 +64,7 @@ router
     Contact: CRUD,
 */
 
-//User_routes
+//Visiteur_routes
 router
   /*CREATE*/
   .post("/api/votrePetitMot", controller.postReview) //a ref

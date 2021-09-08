@@ -1,18 +1,3 @@
-require("dotenv").config();
-const model = require("../model/adminModel");
-const bcrypt = require("bcrypt");
-
-const jwt = require("jsonwebtoken");
-const cookie = require("cookie-parser");
-const ApiError = require("../error/ApiError");
-
-// const SECRET = "see_you_in_1M_years";///test
-const MAXAGE = Math.floor(Date.now() / 1000) + 60 * 60 * 60; // 1 hour of expiration
-
-/*A_ATUHENTIFICATION */
-
-/*I_Inscription*/
-
 exports.signUp = async (request, response, next) => {
   const { email, user_name, password } = request.body;
 
