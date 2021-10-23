@@ -7,8 +7,7 @@ const cookie = require("cookie-parser");
 const ApiError = require("../error/ApiError");
 
 // const SECRET = "see_you_in_1M_years";///test
-const MAXAGE = Math.floor(Date.now() / 1000) + 60 * 60 * 60; // 1 hour of expiration
-
+const MAXAGE = Math.floor(Date.now() / 1000) + 60 * 60 * 60 * 60; // 
 /*A_ATUHENTIFICATION */
 
 /*I_Inscription*/

@@ -6,7 +6,8 @@ const jwt = require("jsonwebtoken");
 //
 
 const isAuth = (req, res, next) => {
-  console.log("request Headers", req.body);
+  console.log("request Headers", req.headers);
+
 
   const authorization =
     req.headers.authorization || req.body.headers.Authorization;
@@ -16,7 +17,7 @@ const isAuth = (req, res, next) => {
       res.status(400).json({ message: "veuillez vous connecter !" });
     } else {
       const token = authorization.replace("Bearer ", "");
-
+      console.log("auth", authorization);
       console.log("TOK", token);
 
       jwt.verify(token, process.env.JWT_SECRET, (error, Admin) => {
