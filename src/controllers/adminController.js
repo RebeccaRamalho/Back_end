@@ -7,7 +7,7 @@ const cookie = require("cookie-parser");
 const ApiError = require("../error/ApiError");
 
 // const SECRET = "see_you_in_1M_years";///test
-const MAXAGE = Math.floor(Date.now() / 1000) + 60 * 60 * 60 * 60; // 
+const MAXAGE = Math.floor(Date.now() / 1000) + 60 * 60 * 60 * 60; //
 /*A_ATUHENTIFICATION */
 
 /*I_Inscription*/
@@ -151,7 +151,7 @@ exports.login = async (request, response, next) => {
             // response.cookie("authcookie", token, { maxAge: MAXAGE });
             //
             response.status(200).json({
-              token: token, /// envoie dans les headers
+              token: token, //envoie dans les headers
               Admin: {
                 admin_id: result[0].admin_id,
                 user_name: result[0].user_name,

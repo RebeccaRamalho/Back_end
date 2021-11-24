@@ -2,7 +2,7 @@ const db = require("../db");
 const mysql = require("mysql2");
 
 /*CREATE*/
-/*creation of the admin's account*/
+/*creation of the _'s account*/
 exports.createAccount = (admin, callback) => {
   db.execute(
     `INSERT INTO admins (user_name, email, password) VALUES (${mysql.escape(
