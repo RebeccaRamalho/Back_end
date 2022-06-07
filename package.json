@@ -7,8 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/server.js",
     "server": "nodemon ./src/server.js",
-    "client": "npm run start --prefix ../hand-of-hope-client",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "client": "npm run start --prefix ../Hand-of-hope-client",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "jsdoc": "jsdoc -c jsdoc.json"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +25,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "flash": "^1.1.0",
+    "jsdoc": "^3.6.7",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
     "mysql2": "^2.2.5",
