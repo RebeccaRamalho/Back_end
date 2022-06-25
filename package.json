@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/server.js",
+    "start": "nodemon --exec babel-node ./src/server.js",
+    "dist": "--exec babel-node dist",
+    "build":"babel ./src/ -d dist",
+    "clean": "rimraf ./dist",
     "server": "nodemon ./src/server.js",
     "client": "npm run start --prefix ../Hand-of-hope-client",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
@@ -16,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
+    "babel": "^6.23.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "concurrently": "^6.2.0",
@@ -34,6 +38,9 @@
     "stripe": "^8.168.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
     "file-loader": "^6.2.0"
   }
 }
